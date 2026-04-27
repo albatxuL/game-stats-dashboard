@@ -1,1 +1,67 @@
-<p>achievements-grid works!</p>
+<section class="achievements-panel" aria-label="Achievements">
+
+  <div class="achievements-panel__header">
+    <div class="achievements-panel__title-block">
+      <h2 class="achievements-panel__title">Achievements</h2>
+      <span class="achievements-panel__subtitle">Case records & detective milestones</span>
+    </div>
+    <div class="achievements-panel__progress">
+      <span class="achievements-panel__progress-val">{{ progress().unlocked }}</span>
+      <span class="achievements-panel__progress-sep">/</span>
+      <span class="achievements-panel__progress-total">{{ progress().total }}</span>
+    </div>
+  </div>
+
+  <!-- Global progress bar -->
+  <div class="achievements-panel__global-bar">
+    <div
+      class="achievements-panel__global-fill"
+      [style.width.%]="progress().percent"
+    ></div>
+  </div>
+
+  <!-- Filters -->
+  <div class="achievements-panel__filters" role="group" aria-label="Filter achievements">
+    @for (f of filterOptions; track f) {
+      <button
+        class="ach-filter"
+        [class.ach-filter--active]="filterMode() === f"
+        (click)="setFilter(f)"
+      >{{ f }}</button>
+    }
+  </div>
+
+  <!-- Public achievements grid -->
+  <div class="achievements-panel__grid">
+    @for (a of filtered(); track a.id) {
+      <df-achievement-badge [achievement]="a" [showDescription]="true" />
+    }
+    @empty {
+      <p class="achievements-panel__empty">No achievements match this filter.</p>
+    }
+  </div>
+
+  <!-- Secret achievements section -->
+  <div class="achievements-panel__secrets">
+    <button
+      class="achievements-panel__secrets-toggle"
+      (click)="toggleSecrets()"
+      [attr.aria-expanded]="showSecrets()"
+    >
+      <span>🗂 Secret achievements</span>
+      <span class="achievements-panel__secrets-count">
+        {{ unlockedSecretCount() }} / {{ secretAchievements().length }} unlocked
+      </span>
+      <span class="achievements-panel__secrets-chevron" [class.achievements-panel__secrets-chevron--open]="showSecrets()">▾</span>
+    </button>
+
+    @if (showSecrets()) {
+      <div class="achievements-panel__secrets-grid">
+        @for (a of secretAchievements(); track a.id) {
+          <df-achievement-badge [achievement]="a" [showDescription]="true" />
+        }
+      </div>
+    }
+  </div>
+
+</section>

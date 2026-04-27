@@ -1,1 +1,42 @@
-<p>session-timeline works!</p>
+<section class="timeline-panel" aria-label="Session timeline">
+  <div class="timeline-panel__header">
+    <div class="timeline-panel__title-block">
+      <h2 class="timeline-panel__title">Session Timeline</h2>
+      <span class="timeline-panel__subtitle">Chronological case progression</span>
+    </div>
+    <div class="timeline-panel__meta">
+      <span class="timeline-panel__duration">{{ totalDuration() }}</span>
+      <span class="timeline-panel__duration-label">total</span>
+    </div>
+  </div>
+
+  <!-- Event type legend -->
+  <div class="timeline-panel__legend">
+    @if (eventTypeCounts()['clue']) {
+      <span class="tl-legend-item tl-legend-item--amber">🔍 {{ eventTypeCounts()['clue'] }}</span>
+    }
+    @if (eventTypeCounts()['interview']) {
+      <span class="tl-legend-item tl-legend-item--muted">💬 {{ eventTypeCounts()['interview'] }}</span>
+    }
+    @if (eventTypeCounts()['lie']) {
+      <span class="tl-legend-item tl-legend-item--red">⚠ {{ eventTypeCounts()['lie'] }}</span>
+    }
+    @if (eventTypeCounts()['decision']) {
+      <span class="tl-legend-item tl-legend-item--warning">⚖ {{ eventTypeCounts()['decision'] }}</span>
+    }
+  </div>
+
+  <!-- Events -->
+  <div class="timeline-panel__events">
+    @for (event of events(); track event.timeSeconds; let i = $index) {
+      <df-timeline-event
+        [event]="event"
+        [index]="i"
+        [isLast]="isLast(i)"
+      />
+    }
+    @empty {
+      <p class="timeline-panel__empty">No timeline data for this case.</p>
+    }
+  </div>
+</section>

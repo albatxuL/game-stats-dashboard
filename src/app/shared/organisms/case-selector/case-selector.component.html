@@ -1,1 +1,30 @@
-<p>case-selector works!</p>
+<nav class="case-selector" aria-label="Case selection">
+  <div class="case-selector__label">Case files</div>
+
+  <div class="case-selector__list">
+    @for (c of cases(); track c.id) {
+      <button
+        class="case-tab"
+        [class.case-tab--active]="c.id === selectedCaseId()"
+        [class.case-tab--completed]="c.status === 'completed'"
+        (click)="selectCase(c.id)"
+        [attr.aria-pressed]="c.id === selectedCaseId()"
+      >
+        <span class="case-tab__number">{{ getCaseNumber(c.id) }}</span>
+        <div class="case-tab__info">
+          <span class="case-tab__title">{{ c.title }}</span>
+          @if (c.status === 'completed') {
+            <df-badge
+              [label]="'Final ' + c.finalId"
+              [variant]="getFinalVariant(c.finalId)"
+              size="sm"
+            />
+          }
+        </div>
+        @if (c.id === selectedCaseId()) {
+          <span class="case-tab__indicator"></span>
+        }
+      </button>
+    }
+  </div>
+</nav>

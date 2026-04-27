@@ -1,1 +1,47 @@
-<p>summary-cards works!</p>
+<section class="summary-cards" aria-label="Case summary">
+  <df-stat-card
+    icon="⏱"
+    [value]="duration()"
+    label="Session time"
+    [animationDelay]="0"
+  />
+
+  <df-stat-card
+    icon="🔍"
+    [value]="cluesLabel()"
+    label="Clues found"
+    [animationDelay]="80"
+  />
+
+  <df-stat-card
+    icon="👥"
+    [value]="suspectsLabel()"
+    label="Suspects interviewed"
+    [animationDelay]="160"
+  />
+
+  <df-stat-card
+    icon="📓"
+    [value]="notebookPct()"
+    label="Notebook complete"
+    [animationDelay]="240"
+  />
+
+  <df-stat-card
+    icon="📋"
+    [value]="c()?.finalLabel ?? '—'"
+    label="Outcome"
+    [badgeLabel]="finalLabel()"
+    [badgeVariant]="finalVariant()"
+    [accent]="true"
+    [animationDelay]="320"
+  />
+
+  <df-stat-card
+    icon="⭐"
+    [value]="repGeneral()"
+    label="Reputation"
+    sublabel="General score"
+    [animationDelay]="400"
+  />
+</section>

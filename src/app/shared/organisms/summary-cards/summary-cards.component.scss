@@ -1,0 +1,12 @@
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
+  align-items: stretch; // force equal height
+
+  // Make all stat-cards fill their grid cell height
+  df-stat-card,
+  & > * {
+    height: 100%;
+  }
+}

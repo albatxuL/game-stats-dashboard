@@ -1,1 +1,79 @@
-<p>notebook-progress works!</p>
+<section class="notebook" aria-label="Notebook progress">
+  <div class="notebook__header">
+    <h2 class="notebook__title">Notebook</h2>
+    @if (notebook()) {
+      <div class="notebook__total">
+        <span class="notebook__pct">{{ notebook()!.completionPercent }}%</span>
+        <span class="notebook__pct-label">complete</span>
+      </div>
+    }
+  </div>
+
+  @if (notebook()) {
+    <!-- Global bar -->
+    <div class="notebook__global">
+      <df-progress-bar
+        [value]="notebook()!.completionPercent"
+        variant="amber"
+        [showLabel]="false"
+        [animated]="true"
+      />
+    </div>
+
+    <div class="notebook__sections">
+
+      <!-- Characters -->
+      <div class="notebook__section">
+        <div class="notebook__section-header">
+          <span class="notebook__section-icon">👤</span>
+          <span class="notebook__section-name">Characters</span>
+          <span class="notebook__section-frac">
+            {{ notebook()!.sections.characters.pagesUnlocked }}
+            / {{ notebook()!.sections.characters.pages + 1 }} pages
+          </span>
+        </div>
+        <df-progress-bar [value]="charPct()" variant="amber" [showLabel]="true" [thin]="false" />
+
+        <!-- Unlock breakdown -->
+        <div class="notebook__breakdown">
+          @for (item of unlockBreakdown(); track item.label) {
+            <div class="notebook__breakdown-row">
+              <span class="notebook__breakdown-label">{{ item.label }}</span>
+              <df-progress-bar [value]="item.pct" variant="muted" [thin]="true" />
+              <span class="notebook__breakdown-val">{{ item.value }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Clues -->
+      <div class="notebook__section">
+        <div class="notebook__section-header">
+          <span class="notebook__section-icon">🔍</span>
+          <span class="notebook__section-name">Clues</span>
+          <span class="notebook__section-frac">
+            {{ notebook()!.sections.clues.pagesUnlocked }}
+            / {{ notebook()!.sections.clues.pages }} pages
+          </span>
+        </div>
+        <df-progress-bar [value]="cluesPct()" variant="blue" [showLabel]="true" />
+      </div>
+
+      <!-- Case File -->
+      <div class="notebook__section">
+        <div class="notebook__section-header">
+          <span class="notebook__section-icon">📁</span>
+          <span class="notebook__section-name">Case File</span>
+          <span class="notebook__section-frac">
+            {{ notebook()!.sections.caseFile.sectionsComplete }}
+            / {{ notebook()!.sections.caseFile.sectionsTotal }} sections
+          </span>
+        </div>
+        <df-progress-bar [value]="caseFilePct()" variant="green" [showLabel]="true" />
+      </div>
+
+    </div>
+  } @else {
+    <p class="notebook__empty">No case selected.</p>
+  }
+</section>

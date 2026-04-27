@@ -1,1 +1,44 @@
-<p>reputation-bars works!</p>
+<section class="rep-panel" aria-label="Reputation scores">
+  <div class="rep-panel__header">
+    <h2 class="rep-panel__title">Reputation</h2>
+    <span class="rep-panel__subtitle">Cumulative across all cases</span>
+  </div>
+
+  <div class="rep-panel__bars">
+    @for (bar of bars(); track bar.key; let i = $index) {
+      <div class="rep-bar" [style.animation-delay]="(i * 80) + 'ms'">
+        <div class="rep-bar__header">
+          <div class="rep-bar__label-group">
+            <span class="rep-bar__icon">{{ bar.icon }}</span>
+            <span class="rep-bar__label">{{ bar.label }}</span>
+          </div>
+          <span class="rep-bar__value" [style.color]="getBarColor(bar.value)">{{ bar.value }}</span>
+        </div>
+        <df-progress-bar
+          [value]="bar.value"
+          [variant]="bar.variant"
+          [showLabel]="false"
+          [animated]="true"
+        />
+        <span class="rep-bar__desc">{{ bar.description }}</span>
+      </div>
+    }
+  </div>
+
+  @if (history().length > 0) {
+    <div class="rep-panel__history">
+      <span class="rep-panel__history-label">Progression</span>
+      <div class="rep-panel__history-row">
+        @for (snap of history(); track snap.afterCase) {
+          <div class="rep-snap">
+            <span class="rep-snap__case">{{ snap.afterCase.replace('case_0','#') }}</span>
+            <span class="rep-snap__val" [style.color]="getBarColor(snap.general)">{{ snap.general }}</span>
+          </div>
+          @if (!$last) {
+            <span class="rep-panel__arrow">→</span>
+          }
+        }
+      </div>
+    </div>
+  }
+</section>

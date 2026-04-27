@@ -1,0 +1,185 @@
+.achievements-panel {
+  background: var(--c-bg-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  &__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--c-text-primary);
+  }
+
+  &__subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+  }
+
+  &__progress {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+
+  &__progress-val {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--c-amber-light);
+    line-height: 1;
+  }
+
+  &__progress-sep {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--c-border-glow);
+  }
+
+  &__progress-total {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--c-text-muted);
+  }
+
+  // Global thin progress bar
+  &__global-bar {
+    height: 3px;
+    background: var(--c-border);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  &__global-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--c-amber-dim), var(--c-amber-light));
+    border-radius: 100px;
+    transition: width 0.8s var(--ease-out);
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 20px;
+      background: linear-gradient(90deg, transparent, rgba(232,184,75,0.5));
+    }
+  }
+
+  &__filters {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: var(--space-5) var(--space-4);
+    justify-items: center;
+  }
+
+  &__empty {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--c-text-muted);
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: var(--space-6);
+  }
+
+  // Secrets section
+  &__secrets {
+    border-top: 1px solid var(--c-border);
+    padding-top: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  &__secrets-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    padding: var(--space-2) 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--c-text-secondary);
+    letter-spacing: 0.04em;
+    transition: color var(--duration-fast);
+
+    &:hover { color: var(--c-amber-light); }
+  }
+
+  &__secrets-count {
+    font-size: 0.65rem;
+    color: var(--c-text-muted);
+    margin-left: auto;
+  }
+
+  &__secrets-chevron {
+    font-size: 0.8rem;
+    transition: transform var(--duration-base) var(--ease-out);
+    color: var(--c-text-muted);
+
+    &--open { transform: rotate(180deg); }
+  }
+
+  &__secrets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: var(--space-5) var(--space-4);
+    justify-items: center;
+    animation: fadeIn 0.25s var(--ease-out);
+  }
+}
+
+.ach-filter {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--space-1) var(--space-3);
+  background: transparent;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+
+  &:hover {
+    border-color: var(--c-border-glow);
+    color: var(--c-text-secondary);
+  }
+
+  &--active {
+    background: rgba(200, 149, 42, 0.1);
+    border-color: var(--c-amber-dim);
+    color: var(--c-amber-light);
+  }
+}

@@ -1,1 +1,61 @@
-<p>decisions-panel works!</p>
+<section class="decisions-panel" aria-label="Decisions and consequences">
+  <div class="decisions-panel__header">
+    <h2 class="decisions-panel__title">Decisions</h2>
+    <span class="decisions-panel__subtitle">Choices made & their future impact</span>
+  </div>
+
+  <!-- Stats row -->
+  <div class="decisions-panel__stats">
+    <div class="decisions-stat">
+      <span class="decisions-stat__icon">🤐</span>
+      <span class="decisions-stat__val">{{ hiddenCount() }}</span>
+      <span class="decisions-stat__label">Hidden</span>
+    </div>
+    <div class="decisions-stat">
+      <span class="decisions-stat__icon">📢</span>
+      <span class="decisions-stat__val">{{ revealedCount() }}</span>
+      <span class="decisions-stat__label">Revealed</span>
+    </div>
+    <div class="decisions-stat decisions-stat--positive">
+      <span class="decisions-stat__icon">↑</span>
+      <span class="decisions-stat__val">{{ positiveCount() }}</span>
+      <span class="decisions-stat__label">Positive</span>
+    </div>
+    <div class="decisions-stat decisions-stat--negative">
+      <span class="decisions-stat__icon">↓</span>
+      <span class="decisions-stat__val">{{ negativeCount() }}</span>
+      <span class="decisions-stat__label">Negative</span>
+    </div>
+  </div>
+
+  <!-- Decision cards -->
+  @if (decisions().length > 0) {
+    <div class="decisions-panel__grid">
+      @for (decision of decisions(); track decision.id; let i = $index) {
+        <div [style.animation-delay]="(i * 80) + 'ms'" class="decisions-panel__item">
+          <df-decision-card [decision]="decision" />
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="decisions-panel__empty">No decisions recorded for this case.</p>
+  }
+
+  <!-- Carryover effects from other cases -->
+  @if (carryoverEffects().length > 0) {
+    <div class="decisions-panel__carryover">
+      <span class="decisions-panel__carryover-title">
+        <span>🦋</span> Carryover effects active in this case
+      </span>
+      <div class="decisions-panel__carryover-list">
+        @for (effect of carryoverEffects(); track effect.decisionId) {
+          <div class="carryover-item" [class]="'carryover-item--' + effect.impact">
+            <span class="carryover-item__case">{{ effect.sourceCase.replace('case_0', 'Case ') }}</span>
+            <span class="carryover-item__effect">{{ effect.effect }}</span>
+            <span class="carryover-item__impact">{{ effect.impact === 'positive' ? '↑' : '↓' }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</section>

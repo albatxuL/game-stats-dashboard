@@ -1,0 +1,106 @@
+.timeline-panel {
+  background: var(--c-bg-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  &__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--c-text-primary);
+  }
+
+  &__subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+  }
+
+  &__meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    flex-shrink: 0;
+  }
+
+  &__duration {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--c-amber-light);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  &__duration-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+  }
+
+  &__legend {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  &__events {
+    display: flex;
+    flex-direction: column;
+    padding-left: var(--space-2);
+    max-height: 480px;
+    overflow-y: auto;
+    padding-right: var(--space-2);
+
+    // Fade out at bottom
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  }
+
+  &__empty {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--c-text-muted);
+    text-align: center;
+    padding: var(--space-8);
+  }
+}
+
+.tl-legend-item {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--c-border);
+  color: var(--c-text-muted);
+  letter-spacing: 0.04em;
+
+  &--amber  { border-color: var(--c-amber-dim);  color: var(--c-amber-light); background: rgba(200,149,42,0.08); }
+  &--muted  { border-color: var(--c-border); }
+  &--red    { border-color: var(--c-red);         color: var(--c-red-light);   background: var(--c-red-dim); }
+  &--warning { border-color: var(--c-amber-dim);  color: var(--c-amber);       background: rgba(200,149,42,0.06); }
+}
