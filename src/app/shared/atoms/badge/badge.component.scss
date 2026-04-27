@@ -1,0 +1,61 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  transition: all var(--duration-fast) var(--ease-out);
+
+  // Sizes
+  &--sm  { font-size: 0.625rem; padding: 2px 6px; }
+  &--md  { font-size: 0.7rem;   padding: 3px 8px; }
+  &--lg  { font-size: 0.8rem;   padding: 4px 12px; }
+
+  // Pill modifier
+  &--pill { border-radius: 100px; }
+
+  // Variants
+  &--default {
+    background: var(--c-bg-elevated);
+    color: var(--c-text-secondary);
+    border-color: var(--c-border);
+  }
+
+  &--success {
+    background: var(--c-green-dim);
+    color: var(--c-green-light);
+    border-color: var(--c-green);
+  }
+
+  &--warning {
+    background: rgba(122, 90, 26, 0.25);
+    color: var(--c-amber-light);
+    border-color: var(--c-amber-dim);
+  }
+
+  &--danger {
+    background: var(--c-red-dim);
+    color: var(--c-red-light);
+    border-color: var(--c-red);
+  }
+
+  &--info {
+    background: var(--c-blue-dim);
+    color: var(--c-blue-light);
+    border-color: var(--c-blue);
+  }
+
+  &--muted {
+    background: transparent;
+    color: var(--c-text-muted);
+    border-color: var(--c-border);
+  }
+
+  &__icon { font-size: 0.85em; line-height: 1; }
+  &__label { line-height: 1; }
+}

@@ -1,1 +1,18 @@
-<p>stat-number works!</p>
+<div class="stat-number" [class]="'stat-number--' + size()" [class.stat-number--accent]="accent()">
+  <div class="stat-number__row">
+    <span class="stat-number__value">{{ value() }}</span>
+    @if (delta()) {
+      <span
+        class="stat-number__delta"
+        [class.stat-number__delta--pos]="deltaPositive()"
+        [class.stat-number__delta--neg]="deltaNegative()"
+      >{{ delta() }}</span>
+    }
+  </div>
+  @if (label()) {
+    <span class="stat-number__label">{{ label() }}</span>
+  }
+  @if (sublabel()) {
+    <span class="stat-number__sublabel">{{ sublabel() }}</span>
+  }
+</div>

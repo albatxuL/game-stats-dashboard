@@ -1,1 +1,22 @@
-<p>progress-bar works!</p>
+<div class="progress" [class.progress--thin]="thin()" [class.progress--labeled]="showLabel()">
+  @if (showLabel()) {
+    <div class="progress__header">
+      @if (label()) {
+        <span class="progress__label">{{ label() }}</span>
+      }
+      <span class="progress__value">{{ Math.round(percent()) }}%</span>
+    </div>
+  }
+  <div class="progress__track">
+    <div
+      class="progress__fill"
+      [class]="'progress__fill--' + variant()"
+      [class.progress__fill--animated]="animated()"
+      [style.width.%]="percent()"
+      role="progressbar"
+      [attr.aria-valuenow]="value()"
+      [attr.aria-valuemin]="0"
+      [attr.aria-valuemax]="max()"
+    ></div>
+  </div>
+</div>

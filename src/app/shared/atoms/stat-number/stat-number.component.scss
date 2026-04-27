@@ -1,0 +1,67 @@
+.stat-number {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  &__row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  &__value {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--c-text-primary);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  &__delta {
+    font-family: var(--font-mono);
+    font-size: 0.75em;
+    font-weight: 500;
+    &--pos { color: var(--c-green-light); }
+    &--neg { color: var(--c-red-light); }
+  }
+
+  &__label {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+  }
+
+  &__sublabel {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--c-text-muted);
+  }
+
+  // Sizes
+  &--sm {
+    .stat-number__value { font-size: 1.25rem; }
+    .stat-number__label { font-size: 0.6rem; }
+    .stat-number__sublabel { font-size: 0.7rem; }
+  }
+  &--md {
+    .stat-number__value { font-size: 1.75rem; }
+    .stat-number__label { font-size: 0.65rem; }
+    .stat-number__sublabel { font-size: 0.75rem; }
+  }
+  &--lg {
+    .stat-number__value { font-size: 1.9rem; }
+    .stat-number__label { font-size: 0.7rem; }
+    .stat-number__sublabel { font-size: 0.8rem; }
+  }
+  &--xl {
+    .stat-number__value { font-size: 3.5rem; }
+    .stat-number__label { font-size: 0.75rem; }
+    .stat-number__sublabel { font-size: 0.85rem; }
+  }
+
+  // Accent: amber tint on value
+  &--accent .stat-number__value {
+    color: var(--c-amber-light);
+  }
+}
