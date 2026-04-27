@@ -1,0 +1,105 @@
+.tl-event {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  grid-template-rows: auto;
+  gap: 0 var(--space-4);
+  position: relative;
+  padding-bottom: var(--space-6);
+  animation: fadeInUp 0.4s var(--ease-out) both;
+
+  &--last { padding-bottom: 0; }
+
+  // Connector line (column 1, runs behind dot)
+  &__line {
+    position: absolute;
+    left: 15px;
+    top: 28px;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--c-border-glow), var(--c-border));
+  }
+
+  // Dot
+  &__dot {
+    grid-column: 1;
+    grid-row: 1;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--c-bg-elevated);
+    border: 1px solid var(--c-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    transition: border-color var(--duration-base) var(--ease-out);
+  }
+
+  &__dot-icon { font-size: 0.85rem; line-height: 1; }
+
+  // Content
+  &__content {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-top: 4px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  &__time {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--c-text-accent);
+    letter-spacing: 0.04em;
+  }
+
+  &__type {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-text-muted);
+    padding: 1px 6px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-sm);
+  }
+
+  &__action {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--c-text-secondary);
+    line-height: 1.4;
+  }
+
+  &__detail {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--c-text-muted);
+    font-style: italic;
+  }
+
+  // Color variants — tint the dot
+  &--amber  .tl-event__dot { border-color: var(--c-amber-dim); background: rgba(200,149,42,0.1); }
+  &--green  .tl-event__dot { border-color: var(--c-green);     background: var(--c-green-dim); }
+  &--red    .tl-event__dot { border-color: var(--c-red);       background: var(--c-red-dim); }
+  &--blue   .tl-event__dot { border-color: var(--c-blue);      background: var(--c-blue-dim); }
+  &--warning .tl-event__dot { border-color: var(--c-amber);    background: rgba(200,149,42,0.15); }
+
+  // Last event: report — special emphasis
+  &--last &__dot {
+    width: 36px; height: 36px;
+    margin-left: -2px;
+    border-color: var(--c-amber);
+    background: linear-gradient(135deg, var(--c-amber-dim), rgba(200,149,42,0.25));
+    box-shadow: 0 0 12px var(--c-amber-glow);
+  }
+}

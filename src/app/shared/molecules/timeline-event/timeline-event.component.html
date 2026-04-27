@@ -1,1 +1,28 @@
-<p>timeline-event works!</p>
+<div
+  class="tl-event"
+  [class]="'tl-event--' + typeConfig().color"
+  [class.tl-event--last]="isLast()"
+  [style.animation-delay]="(index() * 60) + 'ms'"
+>
+  <!-- Vertical connector line -->
+  @if (!isLast()) {
+    <div class="tl-event__line"></div>
+  }
+
+  <!-- Dot -->
+  <div class="tl-event__dot">
+    <span class="tl-event__dot-icon">{{ typeConfig().icon }}</span>
+  </div>
+
+  <!-- Content -->
+  <div class="tl-event__content">
+    <div class="tl-event__header">
+      <span class="tl-event__time">{{ formattedTime() }}</span>
+      <span class="tl-event__type">{{ typeConfig().label }}</span>
+    </div>
+    <p class="tl-event__action">{{ event().action }}</p>
+    @if (event().detail) {
+      <span class="tl-event__detail">{{ event().detail }}</span>
+    }
+  </div>
+</div>

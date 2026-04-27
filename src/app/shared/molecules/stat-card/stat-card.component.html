@@ -1,1 +1,25 @@
-<p>stat-card works!</p>
+<div
+  class="stat-card"
+  [class.stat-card--accent]="accent()"
+  [style.animation-delay]="animationDelay() + 'ms'"
+>
+  <div class="stat-card__header">
+    @if (icon()) {
+      <span class="stat-card__icon">{{ icon() }}</span>
+    }
+    @if (badgeLabel()) {
+      <df-badge [label]="badgeLabel()" [variant]="badgeVariant()" size="sm" />
+    }
+  </div>
+
+  <df-stat-number
+    [value]="value()"
+    [label]="label()"
+    [sublabel]="sublabel()"
+    [delta]="delta()"
+    [accent]="accent()"
+    size="lg"
+  />
+
+  <ng-content />
+</div>

@@ -1,1 +1,27 @@
-<p>achievement-badge works!</p>
+<div
+  class="achievement"
+  [class.achievement--locked]="isLocked()"
+  [class.achievement--secret]="isSecret()"
+  [class.achievement--unlocked]="!isLocked()"
+  [title]="isLocked() && isSecret() ? 'Secret achievement' : achievement().description"
+>
+  <div class="achievement__hex">
+    <div class="achievement__hex-inner">
+      <span class="achievement__icon">{{ displayIcon() }}</span>
+    </div>
+  </div>
+
+  <div class="achievement__info">
+    <span class="achievement__name">{{ displayName() }}</span>
+    @if (showDescription() && !isLocked()) {
+      <span class="achievement__desc">{{ achievement().description }}</span>
+    }
+    @if (achievement().unlockedAtCase) {
+      <span class="achievement__case">{{ achievement().unlockedAtCase }}</span>
+    }
+  </div>
+
+  @if (!isLocked()) {
+    <div class="achievement__glow"></div>
+  }
+</div>

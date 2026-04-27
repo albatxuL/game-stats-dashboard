@@ -1,1 +1,35 @@
-<p>decision-card works!</p>
+<div
+  class="decision-card"
+  [class]="'decision-card--' + decision().choice"
+  [class.decision-card--positive]="decision().effectValence === 'positive'"
+  [class.decision-card--negative]="decision().effectValence === 'negative'"
+  [class.decision-card--ambiguous]="decision().effectValence === 'ambiguous'"
+>
+  <div class="decision-card__top">
+    <div class="decision-card__character">
+      <span class="decision-card__choice-icon">{{ choiceIcon() }}</span>
+      <span class="decision-card__name">{{ decision().character }}</span>
+    </div>
+    <df-badge
+      [label]="choiceLabel()"
+      [variant]="decision().choice === 'hidden' ? 'info' : 'warning'"
+      size="sm"
+    />
+  </div>
+
+  <p class="decision-card__info">{{ decision().info }}</p>
+
+  <div class="decision-card__effect">
+    <span class="decision-card__effect-icon">{{ valenceIcon() }}</span>
+    <div class="decision-card__effect-content">
+      <span class="decision-card__effect-label">Future impact</span>
+      <span class="decision-card__effect-desc">{{ decision().effectDescription }}</span>
+    </div>
+    <df-badge
+      [label]="decision().effectValence"
+      [variant]="badgeVariant()"
+      size="sm"
+      [pill]="true"
+    />
+  </div>
+</div>
