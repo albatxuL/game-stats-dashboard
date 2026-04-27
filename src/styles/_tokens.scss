@@ -1,0 +1,73 @@
+// ============================================================
+// DETECTIVE FIREFLY — Design Tokens
+// Aesthetic: Noir investigativo. Tablero de caso. Ámbar & sombra.
+// ============================================================
+
+:root {
+  // --- Colors ---
+  --c-bg:           #0d0c0a;
+  --c-bg-card:      #131210;
+  --c-bg-elevated:  #1a1814;
+  --c-bg-overlay:   #1f1d19;
+
+  --c-border:       #2a2620;
+  --c-border-glow:  #4a3f2a;
+
+  --c-amber:        #c8952a;
+  --c-amber-light:  #e8b84b;
+  --c-amber-dim:    #7a5a1a;
+  --c-amber-glow:   rgba(200, 149, 42, 0.12);
+
+  --c-green:        #3d7a4a;
+  --c-green-light:  #5aaa6a;
+  --c-green-dim:    #1d3d22;
+  --c-green-glow:   rgba(90, 170, 106, 0.12);
+
+  --c-red:          #8a2a2a;
+  --c-red-light:    #c44a4a;
+  --c-red-dim:      #3d1010;
+  --c-red-glow:     rgba(196, 74, 74, 0.12);
+
+  --c-blue:         #2a4a7a;
+  --c-blue-light:   #4a7abf;
+  --c-blue-dim:     #102040;
+
+  --c-text-primary:   #e8e0d0;
+  --c-text-secondary: #9a9080;
+  --c-text-muted:     #5a5248;
+  --c-text-accent:    #c8952a;
+
+  // --- Typography ---
+  --font-display:  'Playfair Display', Georgia, serif;
+  --font-mono:     'JetBrains Mono', 'Courier New', monospace;
+  --font-body:     'Crimson Pro', Georgia, serif;
+
+  // --- Spacing ---
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  // --- Radii ---
+  --radius-sm:  2px;
+  --radius-md:  4px;
+  --radius-lg:  8px;
+
+  // --- Shadows ---
+  --shadow-card:   0 2px 16px rgba(0,0,0,0.6), 0 0 0 1px var(--c-border);
+  --shadow-glow:   0 0 24px var(--c-amber-glow);
+  --shadow-inset:  inset 0 1px 0 rgba(255,255,255,0.03);
+
+  // --- Transitions ---
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:    cubic-bezier(0.7, 0, 0.84, 0);
+  --duration-fast:   150ms;
+  --duration-base:   250ms;
+  --duration-slow:   400ms;
+}
