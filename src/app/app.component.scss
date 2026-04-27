@@ -1,0 +1,151 @@
+// ============================================================
+// App Shell — scanline, vignette, topbar, footer
+// ============================================================
+
+:host {
+  display: block;
+  min-height: 100vh;
+  position: relative;
+}
+
+// ---- Scanline animation ----
+.app-scanline {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(200, 149, 42, 0.06) 30%,
+    rgba(200, 149, 42, 0.12) 50%,
+    rgba(200, 149, 42, 0.06) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1000;
+  animation: scanline 8s linear infinite;
+  will-change: transform;
+}
+
+// ---- Vignette ----
+.app-vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+// ---- Shell layout ----
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 2;
+}
+
+// ---- Top meta bar ----
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: 32px;
+  padding: 0 var(--space-5);
+  background: var(--c-bg-card);
+  border-bottom: 1px solid var(--c-border);
+  flex-shrink: 0;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    opacity: 0.5;
+
+    &--green { background: #3a7a4a; }
+    &--amber { background: var(--c-amber); }
+    &--red   { background: var(--c-red-light); }
+  }
+
+  &__title {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    color: var(--c-text-muted);
+    text-transform: uppercase;
+    flex: 1;
+    text-align: center;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  &__tag {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: var(--c-amber-dim);
+    border: 1px solid var(--c-amber-dim);
+    border-radius: var(--radius-sm);
+    padding: 1px 5px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+}
+
+// ---- Content ----
+.app-content {
+  flex: 1;
+}
+
+// ---- Footer ----
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  height: 36px;
+  padding: 0 var(--space-6);
+  background: var(--c-bg-card);
+  border-top: 1px solid var(--c-border);
+  flex-shrink: 0;
+
+  &__copy,
+  &__note,
+  &__stack {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--c-text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__stack { color: var(--c-amber-dim); }
+
+  &__divider {
+    color: var(--c-border-glow);
+    font-size: 0.7rem;
+  }
+}
+
+// Responsive — hide middle text on small screens
+@media (max-width: 640px) {
+  .app-topbar__title { display: none; }
+  .app-footer__note,
+  .app-footer__divider { display: none; }
+}
