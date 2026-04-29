@@ -1,2 +1,7 @@
-@use 'styles/tokens-neopunk';  // en lugar de _tokens
+// ── Para tema NOIR (original):
+@use 'styles/tokens';
 @use 'styles/base';
+
+// ── Para tema NEO-PUNK:
+//@use 'styles/tokens-neopunk';
+//@use 'styles/base';

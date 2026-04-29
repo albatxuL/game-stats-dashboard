@@ -1,75 +1,61 @@
 // ============================================================
 // DETECTIVE — Theme: NEO-PUNK
-// Inspired by the game's visual identity:
-// Bold saturated fills, thick outlines, comic-book contrast,
-// urban neon against black, isometric punk energy.
-//
-// Usage: add class="theme-neopunk" to <body> or swap
-// this file for _tokens.scss to switch themes.
+// Cómo usar: importa SOLO este archivo en styles.scss
+// (en lugar de _tokens). Los tokens van directo a :root
+// y los overrides de componentes van al final del archivo.
 // ============================================================
 
-:root,
-.theme-neopunk {
+// ── 1. TOKENS — van a :root, reemplazan los del tema noir ──
 
-  // --- Core Backgrounds ---
-  --c-bg:           #0a0a0a;       // near-black, like the game's outer void
-  --c-bg-card:      #111111;       // slightly lifted surface
-  --c-bg-elevated:  #1a1a1a;       // card hover / raised state
+:root {
+
+  --c-bg:           #0a0a0a;
+  --c-bg-card:      #111111;
+  --c-bg-elevated:  #1a1a1a;
   --c-bg-overlay:   #1f1f1f;
 
   --c-border:       #2a2a2a;
-  --c-border-glow:  #ff3a3a;       // red outline — the game's UI signature
+  --c-border-glow:  #ff3a3a;
 
-  // --- Primary accent: Electric Red (UI panels, back button) ---
   --c-red:          #cc1a1a;
   --c-red-light:    #ff3a3a;
   --c-red-dim:      #3d0808;
   --c-red-glow:     rgba(255, 58, 58, 0.15);
 
-  // --- Secondary: Cobalt Blue (action panel, location labels) ---
   --c-blue:         #0a3acc;
   --c-blue-light:   #2a5fff;
   --c-blue-dim:     #071540;
   --c-blue-glow:    rgba(42, 95, 255, 0.15);
 
-  // --- Accent: Electric Yellow (arcade label, highlights) ---
   --c-amber:        #e8c000;
   --c-amber-light:  #ffe135;
   --c-amber-dim:    #5a4a00;
   --c-amber-glow:   rgba(255, 225, 53, 0.12);
 
-  // --- Purple (almacén label, room tints) ---
   --c-purple:       #6a0acc;
   --c-purple-light: #9b3dff;
   --c-purple-dim:   #200840;
-  --c-purple-glow:  rgba(155, 61, 255, 0.15);
 
-  // --- Teal (baño femenino label) ---
   --c-teal:         #00a888;
   --c-teal-light:   #00ddb3;
   --c-teal-dim:     #002e25;
 
-  // --- Green (positive states) ---
   --c-green:        #00aa44;
   --c-green-light:  #00ee66;
   --c-green-dim:    #002a11;
   --c-green-glow:   rgba(0, 238, 102, 0.12);
 
-  // --- Text ---
   --c-text-primary:   #ffffff;
   --c-text-secondary: #cccccc;
   --c-text-muted:     #666666;
-  --c-text-accent:    #ff3a3a;     // red as accent text
+  --c-text-accent:    #ff3a3a;
 
-  // --- Typography ---
-  // Bold condensed display — echoes the game's uppercase label style
-  --font-display:  'Bebas Neue', 'Black Ops One', Impact, sans-serif;
-  // Mono for data, similar to in-game UI readouts
-  --font-mono:     'Share Tech Mono', 'Courier New', monospace;
-  // Body text — readable but with edge
-  --font-body:     'Barlow Condensed', 'Franklin Gothic Medium', sans-serif;
+  // Tipografía bold condensada
+  --font-display: 'Bebas Neue', 'Black Ops One', Impact, sans-serif;
+  --font-mono:    'Share Tech Mono', 'Courier New', monospace;
+  --font-body:    'Barlow Condensed', 'Franklin Gothic Medium', sans-serif;
 
-  // --- Spacing (same scale) ---
+  // Spacing (igual que noir)
   --space-1:  4px;
   --space-2:  8px;
   --space-3:  12px;
@@ -81,281 +67,274 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  // --- Radii — very tight, almost square. No soft corners here. ---
-  --radius-sm:  0px;
-  --radius-md:  2px;
-  --radius-lg:  2px;
+  // Sin border-radius — estética de cómic
+  --radius-sm: 0px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
 
-  // --- Shadows & Outlines ---
-  // Thick colored drop-shadows, not soft blurs — comic book style
-  --shadow-card:   4px 4px 0px var(--c-red-dim), 0 0 0 2px var(--c-border);
-  --shadow-glow:   0 0 20px var(--c-red-glow), 4px 4px 0 var(--c-red-dim);
-  --shadow-blue:   4px 4px 0px var(--c-blue-dim), 0 0 0 2px var(--c-blue);
-  --shadow-inset:  inset 0 0 0 2px var(--c-border);
+  // Sombras duras (offset sólido, sin blur)
+  --shadow-card:  4px 4px 0px var(--c-red-dim), 0 0 0 2px var(--c-border);
+  --shadow-glow:  0 0 20px var(--c-red-glow), 4px 4px 0 var(--c-red-dim);
+  --shadow-inset: inset 0 0 0 2px var(--c-border);
 
-  // --- Transitions ---
-  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in:    cubic-bezier(0.7, 0, 0.84, 0);
-  --duration-fast:   100ms;   // snappier — feels more arcade
+  --ease-out:        cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:         cubic-bezier(0.7, 0, 0.84, 0);
+  --duration-fast:   100ms;
   --duration-base:   180ms;
   --duration-slow:   300ms;
 }
 
-// ============================================================
-// COMPONENT OVERRIDES for neo-punk theme
-// Drop these at the end of your styles.scss or in a
-// separate theme-neopunk.scss imported after _base.scss
-// ============================================================
 
-.theme-neopunk {
+// ── 2. COMPONENT OVERRIDES ──
+// Estos van SIN selector de clase — aplican globalmente
+// igual que los estilos de _base.scss, pero con estética punk.
 
-  // --- Cards: thick left border + hard shadow ---
-  .stat-card {
-    border-radius: var(--radius-md);
-    border-color: var(--c-border);
-    box-shadow: var(--shadow-card);
+// Google Fonts — añade esto al <head> de index.html:
+// <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue
+//   &family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;700
+//   &display=swap" rel="stylesheet">
 
-    &::before { display: none; } // remove the subtle gradient top line
 
-    // Left accent stripe — like the game's room label arrows
-    border-left: 3px solid var(--c-red-light);
+// --- Stat cards ---
+.stat-card {
+  border-radius: 0;
+  border-width: 2px;
+  border-left: 3px solid var(--c-red-light);
+  box-shadow: var(--shadow-card);
 
-    &:hover {
-      border-left-color: var(--c-blue-light);
-      box-shadow: var(--shadow-blue);
-      transform: translate(-2px, -2px);
-    }
+  &::before { display: none; }
 
-    &--accent {
-      border-left-color: var(--c-amber-light);
-      box-shadow: 4px 4px 0 var(--c-amber-dim), 0 0 0 2px var(--c-amber-dim);
-    }
+  &:hover {
+    border-left-color: var(--c-blue-light);
+    box-shadow: 4px 4px 0 var(--c-blue-dim), 0 0 0 2px var(--c-blue);
+    transform: translate(-2px, -2px);
+    transition: all var(--duration-fast) var(--ease-out);
   }
 
-  // --- Stat numbers: all-caps display font ---
-  .stat-number__value {
-    font-family: var(--font-display);
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-  }
-
-  .stat-number__label {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.14em;
-    color: var(--c-text-muted);
-  }
-
-  // --- Badges: solid fills, no rounded corners ---
-  .badge {
-    border-radius: 0;
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    border-width: 2px;
-
-    &--success  { background: var(--c-green-dim);  border-color: var(--c-green-light); color: var(--c-green-light); }
-    &--warning  { background: var(--c-amber-dim);  border-color: var(--c-amber-light); color: var(--c-amber-light); }
-    &--danger   { background: var(--c-red-dim);    border-color: var(--c-red-light);   color: var(--c-red-light); }
-    &--info     { background: var(--c-blue-dim);   border-color: var(--c-blue-light);  color: var(--c-blue-light); }
-  }
-
-  // --- Progress bars: thicker, no rounded ends ---
-  .progress__track {
-    height: 8px;
-    border-radius: 0;
-    border: 2px solid var(--c-border);
-  }
-
-  .progress__fill {
-    border-radius: 0;
-
-    &--amber { background: var(--c-amber-light); }
-    &--green { background: var(--c-green-light); }
-    &--red   { background: var(--c-red-light); }
-    &--blue  { background: var(--c-blue-light); }
-  }
-
-  // --- Notebook panel: graph paper instead of ruled lines ---
-  .notebook {
-    background-image:
-      linear-gradient(var(--c-border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--c-border) 1px, transparent 1px);
-    background-size: 24px 24px;
-    background-color: var(--c-bg-card);
-    border: 2px solid var(--c-border);
-    border-left: 4px solid var(--c-blue-light);
-  }
-
-  .notebook__title {
-    font-family: var(--font-display);
-    font-style: normal;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--c-blue-light);
-  }
-
-  .notebook__pct { color: var(--c-blue-light); }
-
-  // --- Case selector: game-style tab buttons ---
-  .case-tab {
-    border-radius: 0;
-    border: 2px solid transparent;
-
-    &--active {
-      border-color: var(--c-red-light);
-      background: var(--c-red-dim);
-    }
-
-    &--active &__number { color: var(--c-red-light); border-color: var(--c-red-light); }
-    &--active &__title  { color: #fff; font-style: normal; }
-  }
-
-  .case-tab__indicator {
-    background: var(--c-red-light);
-    box-shadow: 0 0 8px var(--c-red-glow);
-    width: 3px;
-  }
-
-  // --- Dashboard brand ---
-  .dashboard__brand-subtitle {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    color: var(--c-red-light);
-    letter-spacing: 0.06em;
-    text-shadow: 2px 2px 0 var(--c-red-dim);
-  }
-
-  // --- Headings ---
-  .dashboard__heading {
-    font-family: var(--font-display);
-    font-style: normal;
-    font-size: 2.5rem;
-    letter-spacing: 0.04em;
-    color: #fff;
-    text-shadow: 3px 3px 0 var(--c-red-dim);
-  }
-
-  // --- Section titles ---
-  .notebook__title,
-  .rep-panel__title,
-  .timeline-panel__title,
-  .radar-panel__title,
-  .decisions-panel__title,
-  .achievements-panel__title {
-    font-family: var(--font-display);
-    font-style: normal;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #fff;
-  }
-
-  // --- Decision cards: game-panel style ---
-  .decision-card {
-    border-radius: 0;
-    border-width: 2px;
-
-    &--positive { border-color: var(--c-green-light); }
-    &--negative { border-color: var(--c-red-light); }
-    &--ambiguous { border-color: var(--c-amber-light); }
-
-    &::before { width: 4px; }
-  }
-
-  // --- Achievement hex: square crop, game token look ---
-  .achievement__hex,
-  .achievement__hex-inner {
-    clip-path: none;
-    border-radius: 0;
-  }
-
-  .achievement__hex {
-    width: 52px; height: 52px;
-    border: 2px solid var(--c-border);
-  }
-
-  .achievement--unlocked .achievement__hex {
-    border-color: var(--c-amber-light);
-    background: var(--c-amber-dim);
-    box-shadow: 2px 2px 0 var(--c-amber-dim);
-  }
-
-  // --- Timeline dots ---
-  .tl-event__dot {
-    border-radius: 0;
-    border-width: 2px;
-  }
-
-  // --- Radar chart labels inherit display font via CSS var ---
-  // (Chart.js labels are canvas-rendered, override in component options)
-
-  // --- Topbar ---
-  .app-topbar {
-    background: var(--c-red);
-    border-bottom: 2px solid var(--c-red-light);
-  }
-
-  .app-topbar__title {
-    color: rgba(255,255,255,0.9);
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-  }
-
-  .app-topbar__tag {
-    border-color: rgba(255,255,255,0.4);
-    color: rgba(255,255,255,0.7);
-  }
-
-  .app-topbar__dot {
-    opacity: 1;
-    &--green { background: #00ee66; }
-    &--amber { background: #ffe135; }
-    &--red   { background: #ffffff; }
-  }
-
-  // --- Footer ---
-  .app-footer {
-    background: var(--c-bg-card);
-    border-top: 2px solid var(--c-border);
-  }
-
-  // --- Filter buttons (achievements) ---
-  .ach-filter {
-    border-radius: 0;
-    border-width: 2px;
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-
-    &--active {
-      background: var(--c-red-dim);
-      border-color: var(--c-red-light);
-      color: var(--c-red-light);
-    }
-  }
-
-  // --- Scanline: faster, more CRT arcade feel ---
-  .app-scanline {
-    animation-duration: 4s;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 58, 58, 0.06) 30%,
-      rgba(255, 58, 58, 0.14) 50%,
-      rgba(255, 58, 58, 0.06) 70%,
-      transparent 100%
-    );
+  &--accent {
+    border-left-color: var(--c-amber-light);
+    box-shadow: 4px 4px 0 var(--c-amber-dim), 0 0 0 2px var(--c-amber-dim);
+    background: linear-gradient(135deg, var(--c-bg-card), rgba(90,74,0,0.1));
   }
 }
 
-// ============================================================
-// Google Fonts import for neo-punk theme
-// Add to index.html <head> when using this theme:
-//
-// <link href="https://fonts.googleapis.com/css2?
-//   family=Bebas+Neue&
-//   family=Share+Tech+Mono&
-//   family=Barlow+Condensed:wght@400;600;700&
-//   display=swap" rel="stylesheet">
-// ============================================================
+// --- Stat numbers ---
+.stat-number__value {
+  font-family: var(--font-display) !important;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.8);
+}
+
+.stat-number__label {
+  font-family: var(--font-mono) !important;
+  letter-spacing: 0.14em;
+}
+
+// --- Badges: solid, sin redondear ---
+.badge {
+  border-radius: 0 !important;
+  font-family: var(--font-display) !important;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  border-width: 2px;
+
+  &--success  { background: var(--c-green-dim);  border-color: var(--c-green-light); color: var(--c-green-light); }
+  &--warning  { background: var(--c-amber-dim);  border-color: var(--c-amber-light); color: var(--c-amber-light); }
+  &--danger   { background: var(--c-red-dim);    border-color: var(--c-red-light);   color: var(--c-red-light); }
+  &--info     { background: var(--c-blue-dim);   border-color: var(--c-blue-light);  color: var(--c-blue-light); }
+}
+
+// --- Progress bars: gruesas y cuadradas ---
+.progress__track {
+  height: 8px !important;
+  border-radius: 0 !important;
+  border-width: 2px;
+}
+
+.progress__fill {
+  border-radius: 0 !important;
+
+  &--amber { background: var(--c-amber-light); }
+  &--green { background: var(--c-green-light); }
+  &--red   { background: var(--c-red-light); }
+  &--blue  { background: var(--c-blue-light); }
+
+  &::after { display: none; }
+}
+
+// --- Notebook ---
+.notebook {
+  background-image:
+    linear-gradient(var(--c-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--c-border) 1px, transparent 1px) !important;
+  background-size: 24px 24px !important;
+  border: 2px solid var(--c-border);
+  border-left: 4px solid var(--c-blue-light);
+}
+
+.notebook__title {
+  font-family: var(--font-display) !important;
+  font-style: normal !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-blue-light) !important;
+}
+
+.notebook__pct { color: var(--c-blue-light) !important; }
+
+// --- Case tabs ---
+.case-tab {
+  border-radius: 0 !important;
+  border-width: 2px;
+
+  &--active {
+    border-color: var(--c-red-light) !important;
+    background: var(--c-red-dim) !important;
+  }
+
+  &--active &__number { color: var(--c-red-light) !important; border-color: var(--c-red-light) !important; }
+  &--active &__title  { color: #fff !important; font-style: normal !important; }
+}
+
+.case-tab__indicator {
+  background: var(--c-red-light);
+  box-shadow: 0 0 8px var(--c-red-glow);
+  width: 3px;
+}
+
+.case-tab__title { font-style: normal !important; text-transform: uppercase; letter-spacing: 0.04em; }
+
+// --- Dashboard brand ---
+.dashboard__brand-subtitle {
+  font-family: var(--font-display) !important;
+  font-size: 1.5rem !important;
+  color: var(--c-red-light) !important;
+  text-shadow: 2px 2px 0 var(--c-red-dim);
+}
+
+.dashboard__heading {
+  font-family: var(--font-display) !important;
+  font-style: normal !important;
+  font-size: 2.8rem !important;
+  letter-spacing: 0.04em;
+  text-shadow: 3px 3px 0 var(--c-red-dim);
+}
+
+.dashboard__heading-sub {
+  font-family: var(--font-mono) !important;
+}
+
+// --- Todas las section titles ---
+.notebook__title,
+.rep-panel__title,
+.timeline-panel__title,
+.radar-panel__title,
+.decisions-panel__title,
+.achievements-panel__title {
+  font-family: var(--font-display) !important;
+  font-style: normal !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
+}
+
+// --- Decision cards ---
+.decision-card {
+  border-radius: 0 !important;
+  border-width: 2px;
+
+  &::before { width: 4px; }
+  &--positive { border-color: rgba(0,170,68,0.5) !important; }
+  &--negative { border-color: rgba(138,42,42,0.5) !important; }
+  &--ambiguous { border-color: rgba(232,192,0,0.5) !important; }
+}
+
+.decision-card__name { font-style: normal !important; text-transform: uppercase; letter-spacing: 0.04em; }
+
+// --- Achievement badges: cuadrados en lugar de hexagonales ---
+.achievement__hex,
+.achievement__hex-inner {
+  clip-path: none !important;
+  border-radius: 0 !important;
+}
+
+.achievement__hex {
+  width: 52px !important;
+  height: 52px !important;
+  border: 2px solid var(--c-border);
+}
+
+.achievement--unlocked .achievement__hex {
+  border-color: var(--c-amber-light) !important;
+  background: var(--c-amber-dim) !important;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.8);
+}
+
+.achievement__name { text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono) !important; }
+
+// --- Timeline dots: cuadradas ---
+.tl-event__dot {
+  border-radius: 0 !important;
+  border-width: 2px !important;
+}
+
+.tl-event__time { color: var(--c-red-light) !important; }
+
+// --- Topbar ---
+.app-topbar {
+  background: var(--c-red) !important;
+  border-bottom: 2px solid var(--c-red-light) !important;
+}
+
+.app-topbar__title {
+  color: rgba(255,255,255,0.9) !important;
+  font-family: var(--font-display) !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.2em;
+}
+
+.app-topbar__tag { border-color: rgba(255,255,255,0.3) !important; color: rgba(255,255,255,0.6) !important; }
+
+.app-topbar__dot { opacity: 1 !important; }
+.app-topbar__dot--green { background: #00ee66 !important; }
+.app-topbar__dot--amber { background: #ffe135 !important; }
+.app-topbar__dot--red   { background: #ffffff !important; }
+
+// --- Scanline: más rápida, más arcade ---
+.app-scanline {
+  animation-duration: 3s !important;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 58, 58, 0.06) 30%,
+    rgba(255, 58, 58, 0.14) 50%,
+    rgba(255, 58, 58, 0.06) 70%,
+    transparent 100%
+  ) !important;
+}
+
+// --- Achievement filters ---
+.ach-filter {
+  border-radius: 0 !important;
+  border-width: 2px;
+  font-family: var(--font-display) !important;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+
+  &--active {
+    background: var(--c-red-dim) !important;
+    border-color: var(--c-red-light) !important;
+    color: var(--c-red-light) !important;
+  }
+}
+
+// --- Reputation bars ---
+.rep-bar__value { text-shadow: 1px 1px 0 rgba(0,0,0,0.8); }
+
+.rep-panel__history-label,
+.rep-bar__label,
+.rep-snap__case { font-family: var(--font-mono) !important; }
+
+// --- Secrets toggle ---
+.achievements-panel__secrets-toggle { font-family: var(--font-mono) !important; }
