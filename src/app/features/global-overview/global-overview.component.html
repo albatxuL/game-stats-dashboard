@@ -1,0 +1,198 @@
+<div class="global-page">
+
+  @if (isLoading()) {
+    <div class="global-page__loading">
+      <div class="global-page__spinner"></div>
+      <span>Loading analytics data...</span>
+    </div>
+  }
+
+  @if (hasError()) {
+    <div class="global-page__error">
+      <span>⚠</span>
+      <p>Failed to load players index.</p>
+      <code>assets/data/players-index.mock.json</code>
+    </div>
+  }
+
+  @if (!isLoading() && !hasError() && agg()) {
+
+    <!-- ── Header ── -->
+    <header class="global-page__header">
+      <div class="global-page__header-left">
+        <div class="global-page__brand">
+          <span class="global-page__brand-icon">🔦</span>
+          <div class="global-page__brand-text">
+            <span class="global-page__brand-name">Case Files</span>
+            <span class="global-page__brand-sub">Analytics Dashboard</span>
+          </div>
+        </div>
+        <div>
+          <h1 class="global-page__title">Analytics Overview</h1>
+          <p class="global-page__subtitle">
+            Exploratory Data Analysis · {{ agg()!.totalPlayers }} detectives · IBM DS methodology
+          </p>
+        </div>
+      </div>
+
+      <div class="global-page__header-right">
+        <!-- Search -->
+        <div class="global-page__search">
+          <div class="global-page__search-wrap">
+            <span class="global-page__search-icon">🔎</span>
+            <input
+              class="global-page__search-input"
+              type="text"
+              placeholder="Search detective..."
+              [value]="searchQuery()"
+              (input)="onSearchInput($any($event.target).value)"
+              autocomplete="off"
+              aria-label="Search player"
+            />
+            @if (searchQuery()) {
+              <button class="global-page__search-clear" (click)="onSearchInput('')">✕</button>
+            }
+          </div>
+
+          @if (suggestions().length > 0) {
+            <ul class="global-page__suggestions" role="listbox">
+              @for (p of suggestions(); track p.id) {
+                <li
+                  class="global-page__suggestion"
+                  [class.global-page__suggestion--outlier]="p.isOutlier"
+                  role="option"
+                  (click)="navigateToPlayer(p)"
+                  (keydown.enter)="navigateToPlayer(p)"
+                  tabindex="0"
+                >
+                  <span class="global-page__suggestion-avatar">{{ p.name.charAt(0) }}</span>
+                  <div class="global-page__suggestion-info">
+                    <span class="global-page__suggestion-name">{{ p.name }}</span>
+                    <span class="global-page__suggestion-meta">{{ p.rank }} · {{ p.casesCompleted }} cases</span>
+                  </div>
+                  <div class="global-page__suggestion-badges">
+                    <df-badge [label]="p.playStyle" [variant]="getPlayStyleVariant(p.playStyle)" size="sm" />
+                    @if (p.isOutlier) { <df-badge label="outlier" variant="danger" size="sm" /> }
+                  </div>
+                  <span class="global-page__suggestion-arrow">→</span>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
+        <!-- Methodology link -->
+        <a class="global-page__method-link" routerLink="/methodology">
+          <span>📐</span>
+          <span>Methodology</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- ── Roster with pagination ── -->
+    <section class="global-page__roster">
+      <div class="global-page__roster-header">
+        <div class="global-page__roster-label">
+          All detectives
+          <span class="global-page__roster-count">
+            ({{ players().length }} total · {{ agg()!.dropoutCount }} abandoned · {{ agg()!.totalPlayers - agg()!.dropoutCount }} completed)
+          </span>
+        </div>
+        <!-- Pagination info -->
+        <div class="global-page__pagination-info">
+          Showing {{ currentPage() * pageSize + 1 }}–{{ minOf(players().length, (currentPage() + 1) * pageSize) }}
+          of {{ players().length }}
+        </div>
+      </div>
+
+      <!-- Roster grid -->
+      <div class="global-page__roster-grid">
+        @for (p of paginatedPlayers(); track p.id) {
+          <button
+            class="roster-card"
+            [class.roster-card--outlier]="p.isOutlier"
+            [class.roster-card--abandoned]="p.isDrop"
+            (click)="navigateToPlayer(p)"
+            [attr.aria-label]="'View profile of ' + p.name"
+          >
+            <div class="roster-card__top">
+              <span class="roster-card__avatar">{{ p.name.charAt(0) }}</span>
+              <df-badge [label]="p.playStyle" [variant]="getPlayStyleVariant(p.playStyle)" size="sm" />
+            </div>
+
+            <span class="roster-card__name">{{ p.name }}</span>
+            <span class="roster-card__rank">{{ p.rank }}</span>
+
+            <div class="roster-card__stats">
+              <span class="roster-card__stat">
+                <span class="roster-card__stat-val">{{ p.reputation }}</span>
+                <span class="roster-card__stat-label">rep</span>
+              </span>
+              <span class="roster-card__stat">
+                <span class="roster-card__stat-val">{{ p.casesCompleted }}/4</span>
+                <span class="roster-card__stat-label">cases</span>
+              </span>
+              <span class="roster-card__stat">
+                <span class="roster-card__stat-val">{{ p.notebookAvg | number:'1.0-0' }}%</span>
+                <span class="roster-card__stat-label">notebook</span>
+              </span>
+            </div>
+
+            @if (p.isOutlier) {
+              <span class="roster-card__tag roster-card__tag--outlier">⚠ outlier estadístico</span>
+            }
+            @if (p.isDrop) {
+              <span class="roster-card__tag roster-card__tag--abandoned">⊘ partida abandonada</span>
+            }
+
+            <span class="roster-card__cta">Ver perfil →</span>
+          </button>
+        }
+      </div>
+
+      <!-- Pagination controls -->
+      @if (totalPages() > 1) {
+        <div class="global-page__pagination">
+          <button
+            class="pagination-btn pagination-btn--arrow"
+            [disabled]="currentPage() === 0"
+            (click)="prevPage()"
+            aria-label="Previous page"
+          >←</button>
+
+          @for (page of pageNumbers(); track page) {
+            <button
+              class="pagination-btn"
+              [class.pagination-btn--active]="currentPage() === page"
+              (click)="goToPage(page)"
+              [attr.aria-label]="'Page ' + (page + 1)"
+              [attr.aria-current]="currentPage() === page ? 'page' : null"
+            >{{ page + 1 }}</button>
+          }
+
+          <button
+            class="pagination-btn pagination-btn--arrow"
+            [disabled]="currentPage() === totalPages() - 1"
+            (click)="nextPage()"
+            aria-label="Next page"
+          >→</button>
+        </div>
+      }
+    </section>
+
+    <!-- ── Analytics sections ── -->
+    <section class="global-page__section">
+      <df-global-stats-overview />
+    </section>
+
+    <section class="global-page__section global-page__section--cols">
+      <df-player-distribution />
+      <df-correlation-heatmap />
+    </section>
+
+    <section class="global-page__section">
+      <df-player-ranking />
+    </section>
+
+  }
+</div>

@@ -1,61 +1,60 @@
 // ============================================================
-// DETECTIVE — Theme: NEO-PUNK
-// Cómo usar: importa SOLO este archivo en styles.scss
-// (en lugar de _tokens). Los tokens van directo a :root
-// y los overrides de componentes van al final del archivo.
+// THEME: DETECTIVE FIREFLY — Neo-Punk / Insect Detective
+// Basado exclusivamente en la paleta de colores y estética de las capturas.
 // ============================================================
 
-// ── 1. TOKENS — van a :root, reemplazan los del tema noir ──
-
 :root {
+  // --- Colores Base (Oscuridad Profunda) ---
+  --c-bg:           #000000; // Negro puro
+  --c-bg-card:      #0c0c0c; // Gris casi negro
+  --c-bg-elevated:  #141414;
+  --c-bg-overlay:   rgba(0, 0, 0, 0.85);
 
-  --c-bg:           #0a0a0a;
-  --c-bg-card:      #111111;
-  --c-bg-elevated:  #1a1a1a;
-  --c-bg-overlay:   #1f1f1f;
+  --c-border:       #1f1f1f;
+  --c-border-glow:  #ff3c00; // Naranja neón de la bufanda/brillo de ojos
 
-  --c-border:       #2a2a2a;
-  --c-border-glow:  #ff3a3a;
+  // --- Colores Principales (Los Neones de la Ciudad) ---
+  
+  // El Azul Primario (el fondo de rayas y la piel del detective)
+  --c-blue:         #0047ff; // Azul vibrante
+  --c-blue-light:   #3d75ff;
+  --c-blue-dim:     #001c66;
+  --c-blue-glow:    rgba(0, 71, 255, 0.2);
 
-  --c-red:          #cc1a1a;
-  --c-red-light:    #ff3a3a;
-  --c-red-dim:      #3d0808;
-  --c-red-glow:     rgba(255, 58, 58, 0.15);
+  // El Verde Neón (el panel de "REPORT COMPLETED")
+  --c-green:        #00ff0a; // Verde eléctrico saturado
+  --c-green-light:  #5cff6a;
+  --c-green-dim:    #004d03;
+  --c-green-glow:   rgba(0, 255, 10, 0.15);
 
-  --c-blue:         #0a3acc;
-  --c-blue-light:   #2a5fff;
-  --c-blue-dim:     #071540;
-  --c-blue-glow:    rgba(42, 95, 255, 0.15);
+  // El Naranja/Rojo Neón (bufanda, ojos del detective, brillo)
+  --c-neon-orange:  #ff3c00; 
+  --c-neon-red:     #e00000;
+  
+  // El Amarillo del Logo ("Detective Firefly") y los ojos de la luciérnaga
+  --c-yellow:       #ffee00;
+  --c-yellow-light: #fff366;
+  --c-yellow-dim:   #4d4a00;
 
-  --c-amber:        #e8c000;
-  --c-amber-light:  #ffe135;
-  --c-amber-dim:    #5a4a00;
-  --c-amber-glow:   rgba(255, 225, 53, 0.12);
+  // Violetas del mapa (zonas oscuras/interiores)
+  --c-purple:       #4f00db;
+  --c-purple-dim:   #1a004a;
 
-  --c-purple:       #6a0acc;
-  --c-purple-light: #9b3dff;
-  --c-purple-dim:   #200840;
-
-  --c-teal:         #00a888;
-  --c-teal-light:   #00ddb3;
-  --c-teal-dim:     #002e25;
-
-  --c-green:        #00aa44;
-  --c-green-light:  #00ee66;
-  --c-green-dim:    #002a11;
-  --c-green-glow:   rgba(0, 238, 102, 0.12);
-
-  --c-text-primary:   #ffffff;
-  --c-text-secondary: #cccccc;
+  // --- Colores de Texto ---
+  --c-text-primary:   #ffffff; // Blanco puro
+  --c-text-secondary: #aaaaaa; // Gris claro
   --c-text-muted:     #666666;
-  --c-text-accent:    #ff3a3a;
+  --c-text-accent:    var(--c-yellow); // Amarillo del logo
 
-  // Tipografía bold condensada
-  --font-display: 'Bebas Neue', 'Black Ops One', Impact, sans-serif;
-  --font-mono:    'Share Tech Mono', 'Courier New', monospace;
-  --font-body:    'Barlow Condensed', 'Franklin Gothic Medium', sans-serif;
+  // --- Tipografía Neo-Punk ---
+  // Font display bold y condensada, similar al logo
+  --font-display:   'Barlow Condensed', sans-serif; // O similar como 'Bebas Neue'
+  // Font mono industrial para datos
+  --font-mono:      'Share Tech Mono', monospace;
+  // Font body sans-serif limpia
+  --font-body:      'Barlow', sans-serif;
 
-  // Spacing (igual que noir)
+  // --- Espaciado (Punk: compacto) ---
   --space-1:  4px;
   --space-2:  8px;
   --space-3:  12px;
@@ -65,276 +64,22 @@
   --space-8:  32px;
   --space-10: 40px;
   --space-12: 48px;
-  --space-16: 64px;
 
-  // Sin border-radius — estética de cómic
+  // --- Radios (Cero bordes redondeados) ---
   --radius-sm: 0px;
-  --radius-md: 2px;
-  --radius-lg: 2px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
 
-  // Sombras duras (offset sólido, sin blur)
-  --shadow-card:  4px 4px 0px var(--c-red-dim), 0 0 0 2px var(--c-border);
-  --shadow-glow:  0 0 20px var(--c-red-glow), 4px 4px 0 var(--c-red-dim);
-  --shadow-inset: inset 0 0 0 2px var(--c-border);
+  // --- Efectos Visuales (Sombras Duras / Brillo) ---
+  // Sombras sólidas para tarjetas, como el panel de texto
+  --shadow-card:   4px 4px 0px rgba(0,0,0,0.9), 0 0 0 1px var(--c-border);
+  
+  // Sombras con brillo de neón (para elementos activos)
+  --shadow-glow:   0 0 15px var(--c-blue-glow), inset 0 0 10px rgba(0, 71, 255, 0.1);
+  --shadow-inset:  inset 0 0 15px rgba(0,0,0,0.7);
 
-  --ease-out:        cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in:         cubic-bezier(0.7, 0, 0.84, 0);
-  --duration-fast:   100ms;
-  --duration-base:   180ms;
-  --duration-slow:   300ms;
+  // --- Transiciones ---
+  --ease-out:      cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-fast: 100ms;
+  --duration-base: 200ms;
 }
-
-
-// ── 2. COMPONENT OVERRIDES ──
-// Estos van SIN selector de clase — aplican globalmente
-// igual que los estilos de _base.scss, pero con estética punk.
-
-// Google Fonts — añade esto al <head> de index.html:
-// <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue
-//   &family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;700
-//   &display=swap" rel="stylesheet">
-
-
-// --- Stat cards ---
-.stat-card {
-  border-radius: 0;
-  border-width: 2px;
-  border-left: 3px solid var(--c-red-light);
-  box-shadow: var(--shadow-card);
-
-  &::before { display: none; }
-
-  &:hover {
-    border-left-color: var(--c-blue-light);
-    box-shadow: 4px 4px 0 var(--c-blue-dim), 0 0 0 2px var(--c-blue);
-    transform: translate(-2px, -2px);
-    transition: all var(--duration-fast) var(--ease-out);
-  }
-
-  &--accent {
-    border-left-color: var(--c-amber-light);
-    box-shadow: 4px 4px 0 var(--c-amber-dim), 0 0 0 2px var(--c-amber-dim);
-    background: linear-gradient(135deg, var(--c-bg-card), rgba(90,74,0,0.1));
-  }
-}
-
-// --- Stat numbers ---
-.stat-number__value {
-  font-family: var(--font-display) !important;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.8);
-}
-
-.stat-number__label {
-  font-family: var(--font-mono) !important;
-  letter-spacing: 0.14em;
-}
-
-// --- Badges: solid, sin redondear ---
-.badge {
-  border-radius: 0 !important;
-  font-family: var(--font-display) !important;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  border-width: 2px;
-
-  &--success  { background: var(--c-green-dim);  border-color: var(--c-green-light); color: var(--c-green-light); }
-  &--warning  { background: var(--c-amber-dim);  border-color: var(--c-amber-light); color: var(--c-amber-light); }
-  &--danger   { background: var(--c-red-dim);    border-color: var(--c-red-light);   color: var(--c-red-light); }
-  &--info     { background: var(--c-blue-dim);   border-color: var(--c-blue-light);  color: var(--c-blue-light); }
-}
-
-// --- Progress bars: gruesas y cuadradas ---
-.progress__track {
-  height: 8px !important;
-  border-radius: 0 !important;
-  border-width: 2px;
-}
-
-.progress__fill {
-  border-radius: 0 !important;
-
-  &--amber { background: var(--c-amber-light); }
-  &--green { background: var(--c-green-light); }
-  &--red   { background: var(--c-red-light); }
-  &--blue  { background: var(--c-blue-light); }
-
-  &::after { display: none; }
-}
-
-// --- Notebook ---
-.notebook {
-  background-image:
-    linear-gradient(var(--c-border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--c-border) 1px, transparent 1px) !important;
-  background-size: 24px 24px !important;
-  border: 2px solid var(--c-border);
-  border-left: 4px solid var(--c-blue-light);
-}
-
-.notebook__title {
-  font-family: var(--font-display) !important;
-  font-style: normal !important;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--c-blue-light) !important;
-}
-
-.notebook__pct { color: var(--c-blue-light) !important; }
-
-// --- Case tabs ---
-.case-tab {
-  border-radius: 0 !important;
-  border-width: 2px;
-
-  &--active {
-    border-color: var(--c-red-light) !important;
-    background: var(--c-red-dim) !important;
-  }
-
-  &--active &__number { color: var(--c-red-light) !important; border-color: var(--c-red-light) !important; }
-  &--active &__title  { color: #fff !important; font-style: normal !important; }
-}
-
-.case-tab__indicator {
-  background: var(--c-red-light);
-  box-shadow: 0 0 8px var(--c-red-glow);
-  width: 3px;
-}
-
-.case-tab__title { font-style: normal !important; text-transform: uppercase; letter-spacing: 0.04em; }
-
-// --- Dashboard brand ---
-.dashboard__brand-subtitle {
-  font-family: var(--font-display) !important;
-  font-size: 1.5rem !important;
-  color: var(--c-red-light) !important;
-  text-shadow: 2px 2px 0 var(--c-red-dim);
-}
-
-.dashboard__heading {
-  font-family: var(--font-display) !important;
-  font-style: normal !important;
-  font-size: 2.8rem !important;
-  letter-spacing: 0.04em;
-  text-shadow: 3px 3px 0 var(--c-red-dim);
-}
-
-.dashboard__heading-sub {
-  font-family: var(--font-mono) !important;
-}
-
-// --- Todas las section titles ---
-.notebook__title,
-.rep-panel__title,
-.timeline-panel__title,
-.radar-panel__title,
-.decisions-panel__title,
-.achievements-panel__title {
-  font-family: var(--font-display) !important;
-  font-style: normal !important;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
-}
-
-// --- Decision cards ---
-.decision-card {
-  border-radius: 0 !important;
-  border-width: 2px;
-
-  &::before { width: 4px; }
-  &--positive { border-color: rgba(0,170,68,0.5) !important; }
-  &--negative { border-color: rgba(138,42,42,0.5) !important; }
-  &--ambiguous { border-color: rgba(232,192,0,0.5) !important; }
-}
-
-.decision-card__name { font-style: normal !important; text-transform: uppercase; letter-spacing: 0.04em; }
-
-// --- Achievement badges: cuadrados en lugar de hexagonales ---
-.achievement__hex,
-.achievement__hex-inner {
-  clip-path: none !important;
-  border-radius: 0 !important;
-}
-
-.achievement__hex {
-  width: 52px !important;
-  height: 52px !important;
-  border: 2px solid var(--c-border);
-}
-
-.achievement--unlocked .achievement__hex {
-  border-color: var(--c-amber-light) !important;
-  background: var(--c-amber-dim) !important;
-  box-shadow: 2px 2px 0 rgba(0,0,0,0.8);
-}
-
-.achievement__name { text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono) !important; }
-
-// --- Timeline dots: cuadradas ---
-.tl-event__dot {
-  border-radius: 0 !important;
-  border-width: 2px !important;
-}
-
-.tl-event__time { color: var(--c-red-light) !important; }
-
-// --- Topbar ---
-.app-topbar {
-  background: var(--c-red) !important;
-  border-bottom: 2px solid var(--c-red-light) !important;
-}
-
-.app-topbar__title {
-  color: rgba(255,255,255,0.9) !important;
-  font-family: var(--font-display) !important;
-  font-size: 0.8rem !important;
-  letter-spacing: 0.2em;
-}
-
-.app-topbar__tag { border-color: rgba(255,255,255,0.3) !important; color: rgba(255,255,255,0.6) !important; }
-
-.app-topbar__dot { opacity: 1 !important; }
-.app-topbar__dot--green { background: #00ee66 !important; }
-.app-topbar__dot--amber { background: #ffe135 !important; }
-.app-topbar__dot--red   { background: #ffffff !important; }
-
-// --- Scanline: más rápida, más arcade ---
-.app-scanline {
-  animation-duration: 3s !important;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 58, 58, 0.06) 30%,
-    rgba(255, 58, 58, 0.14) 50%,
-    rgba(255, 58, 58, 0.06) 70%,
-    transparent 100%
-  ) !important;
-}
-
-// --- Achievement filters ---
-.ach-filter {
-  border-radius: 0 !important;
-  border-width: 2px;
-  font-family: var(--font-display) !important;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-
-  &--active {
-    background: var(--c-red-dim) !important;
-    border-color: var(--c-red-light) !important;
-    color: var(--c-red-light) !important;
-  }
-}
-
-// --- Reputation bars ---
-.rep-bar__value { text-shadow: 1px 1px 0 rgba(0,0,0,0.8); }
-
-.rep-panel__history-label,
-.rep-bar__label,
-.rep-snap__case { font-family: var(--font-mono) !important; }
-
-// --- Secrets toggle ---
-.achievements-panel__secrets-toggle { font-family: var(--font-mono) !important; }

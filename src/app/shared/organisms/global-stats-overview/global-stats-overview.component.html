@@ -1,0 +1,149 @@
+<section class="global-overview" aria-label="Global analytics overview">
+
+  <div class="global-overview__header">
+    <div>
+      <h2 class="global-overview__title">Global Overview</h2>
+      <p class="global-overview__subtitle">Descriptive statistics across {{ agg()?.totalPlayers ?? 0 }} detectives</p>
+    </div>
+    @if (outliers().length > 0) {
+      <div class="global-overview__outlier-badge">
+        ⚠ {{ outliers().length }} statistical outlier{{ outliers().length > 1 ? 's' : '' }} detected
+      </div>
+    }
+  </div>
+
+  <!-- IBM DS: Key descriptive stats -->
+  <div class="global-overview__cards">
+    <df-stat-card
+      icon="👥"
+      [value]="agg()?.totalPlayers ?? 0"
+      label="Total players"
+      [animationDelay]="0"
+    />
+    <df-stat-card
+      icon="⏱"
+      [value]="avgDuration()"
+      label="Avg session"
+      [sublabel]="'Median: ' + medianDuration()"
+      [animationDelay]="80"
+    />
+    <df-stat-card
+      icon="📓"
+      [value]="(agg()?.avgNotebookCompletion ?? 0) + '%'"
+      label="Avg notebook"
+      [sublabel]="'Median: ' + (agg()?.medianNotebookCompletion ?? 0) + '%'"
+      [animationDelay]="160"
+    />
+    <df-stat-card
+      icon="⭐"
+      [value]="agg()?.avgReputation ?? 0"
+      label="Avg reputation"
+      [sublabel]="'σ = ' + (repStats()?.stdDev ?? 0)"
+      [animationDelay]="240"
+    />
+    <df-stat-card
+      icon="🤐"
+      [value]="hiddenRate() + '%'"
+      label="Hidden decisions"
+      [sublabel]="'vs ' + (100 - hiddenRate()) + '% revealed'"
+      [animationDelay]="320"
+    />
+    <df-stat-card
+      icon="🏆"
+      [value]="'Final ' + topFinal()"
+      label="Most common outcome"
+      [accent]="true"
+      [animationDelay]="400"
+    />
+  </div>
+
+  <!-- IBM DS: Descriptive stats panel (mean, median, std dev, IQR) -->
+  @if (repStats()) {
+    <div class="global-overview__stats-grid">
+      <div class="stats-panel">
+        <div class="stats-panel__title">Reputation — distribution summary</div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Mean</span>
+          <span class="stats-panel__val">{{ repStats()!.mean }}</span>
+        </div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Median</span>
+          <span class="stats-panel__val">{{ repStats()!.median }}</span>
+        </div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Std deviation (σ)</span>
+          <span class="stats-panel__val stats-panel__val--accent">{{ repStats()!.stdDev }}</span>
+        </div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Q1 / Q3 (IQR)</span>
+          <span class="stats-panel__val">{{ repStats()!.q1 }} / {{ repStats()!.q3 }}</span>
+        </div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Range</span>
+          <span class="stats-panel__val">{{ repStats()!.min }} – {{ repStats()!.max }}</span>
+        </div>
+      </div>
+
+      <div class="stats-panel">
+        <div class="stats-panel__title">Notebook — distribution summary</div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Mean</span>
+          <span class="stats-panel__val">{{ nbStats()!.mean }}%</span>
+        </div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Median</span>
+          <span class="stats-panel__val">{{ nbStats()!.median }}%</span>
+        </div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Std deviation (σ)</span>
+          <span class="stats-panel__val stats-panel__val--accent">{{ nbStats()!.stdDev }}</span>
+        </div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Q1 / Q3 (IQR)</span>
+          <span class="stats-panel__val">{{ nbStats()!.q1 }} / {{ nbStats()!.q3 }}</span>
+        </div>
+        <div class="stats-panel__row">
+          <span class="stats-panel__label">Range</span>
+          <span class="stats-panel__val">{{ nbStats()!.min }}% – {{ nbStats()!.max }}%</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- IBM DS: Play style segmentation -->
+  <div class="global-overview__segments">
+    <div class="global-overview__segment-title">Play style segmentation</div>
+    <div class="global-overview__segment-bars">
+      @for (seg of segments(); track seg.segment) {
+        <div class="segment-row">
+          <span class="segment-row__label">{{ seg.segment }}</span>
+          <df-progress-bar
+            [value]="seg.pct"
+            [variant]="segmentColor(seg.segment)"
+            [showLabel]="true"
+          />
+          <span class="segment-row__count">{{ seg.count }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- IBM DS: Final distribution -->
+  <div class="global-overview__finals">
+    <div class="global-overview__finals-title">Outcome distribution</div>
+    <div class="global-overview__finals-bars">
+      @for (f of finalEntries(); track f.label) {
+        <div class="final-row">
+          <span class="final-row__label">{{ f.label }}</span>
+          <df-progress-bar
+            [value]="f.pct"
+            [variant]="f.label.includes('A') ? 'green' : f.label.includes('D') ? 'red' : 'amber'"
+            [showLabel]="true"
+          />
+          <span class="final-row__count">{{ f.count }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+</section>

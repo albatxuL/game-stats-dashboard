@@ -1,13 +1,8 @@
-<!-- Ambient scanline effect -->
 <div class="app-scanline" aria-hidden="true"></div>
-
-<!-- Vignette overlay -->
 <div class="app-vignette" aria-hidden="true"></div>
 
-<!-- App shell -->
 <div class="app-shell">
 
-  <!-- Top meta bar -->
   <div class="app-topbar" role="banner">
     <div class="app-topbar__left">
       <span class="app-topbar__dot app-topbar__dot--green"></span>
@@ -21,20 +16,14 @@
     </div>
   </div>
 
-  <!-- Page content via router -->
   <main class="app-content">
     <router-outlet />
   </main>
 
-  <!-- Footer -->
   <footer class="app-footer" role="contentinfo">
-    <span class="app-footer__copy">
-      © {{ year }} · Detective Firefly · Portfolio Project
-    </span>
+    <span class="app-footer__copy">© {{ year }} · Portfolio Project</span>
     <span class="app-footer__divider">·</span>
-    <span class="app-footer__note">
-      All data is fictional — no real game content is disclosed
-    </span>
+    <span class="app-footer__note">All data is fictional</span>
     <span class="app-footer__divider">·</span>
     <span class="app-footer__stack">Angular · Chart.js · Signals</span>
   </footer>

@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Case, GameData } from '../models/game-data.model';
 
 @Injectable({ providedIn: 'root' })
@@ -10,16 +10,17 @@ export class GameDataService {
   readonly data = this._data.asReadonly();
 
   readonly selectedCaseId = signal<string>('case_01');
-
   readonly isLoading = signal<boolean>(false);
   readonly hasError = signal<boolean>(false);
+  readonly errorMessage = signal<string>('');
+  readonly activeDataFile = signal<string>('game-data.mock.json');
 
   // Computed selectors
-  readonly player = computed(() => this._data()?.player ?? null);
-  readonly reputation = computed(() => this._data()?.reputation ?? null);
-  readonly cases = computed(() => this._data()?.cases ?? []);
+  readonly player       = computed(() => this._data()?.player ?? null);
+  readonly reputation   = computed(() => this._data()?.reputation ?? null);
+  readonly cases        = computed(() => this._data()?.cases ?? []);
   readonly achievements = computed(() => this._data()?.achievements ?? []);
-  readonly globalStats = computed(() => this._data()?.globalStats ?? null);
+  readonly globalStats  = computed(() => this._data()?.globalStats ?? null);
 
   readonly selectedCase = computed<Case | null>(() =>
     this._data()?.cases.find(c => c.id === this.selectedCaseId()) ?? null
@@ -36,17 +37,28 @@ export class GameDataService {
   readonly achievementProgress = computed(() => {
     const all = this._data()?.achievements ?? [];
     const unlocked = all.filter(a => a.unlocked).length;
+    if (all.length === 0) return { unlocked: 0, total: 0, percent: 0 };
     return { unlocked, total: all.length, percent: Math.round((unlocked / all.length) * 100) };
   });
 
-  load(): void {
+  // Load default player (Alba) or a specific player's file
+  load(dataFile = 'game-data.mock.json'): void {
     this.isLoading.set(true);
-    this.http.get<GameData>('assets/data/game-data.mock.json').subscribe({
+    this.hasError.set(false);
+    this.errorMessage.set('');
+    this.activeDataFile.set(dataFile);
+
+    this.http.get<GameData>(`assets/data/${dataFile}`).subscribe({
       next: (data) => {
         this._data.set(data);
+        // Reset to first completed case on player change
+        const firstCase = data.cases.find(c => c.status === 'completed');
+        if (firstCase) this.selectedCaseId.set(firstCase.id);
         this.isLoading.set(false);
       },
-      error: () => {
+      error: (err: HttpErrorResponse) => {
+        console.error('[GameDataService] Load error:', err.status, err.url);
+        this.errorMessage.set(`HTTP ${err.status} — ${err.url}`);
         this.hasError.set(true);
         this.isLoading.set(false);
       }
@@ -57,7 +69,6 @@ export class GameDataService {
     this.selectedCaseId.set(caseId);
   }
 
-  // Utility helpers
   formatDuration(seconds: number): string {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;

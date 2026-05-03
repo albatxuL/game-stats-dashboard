@@ -1,0 +1,66 @@
+<section class="ranking-panel" aria-label="Player ranking and percentiles">
+  <div class="ranking-panel__header">
+    <h2 class="ranking-panel__title">Player Ranking</h2>
+    <span class="ranking-panel__subtitle">Percentile position vs all detectives</span>
+  </div>
+
+  <!-- IBM DS: Percentile bars for current player -->
+  @if (percentiles()) {
+    <div class="ranking-panel__percentiles">
+      <div class="ranking-panel__percentile-title">
+        {{ gameData.player()?.name }} — percentile profile
+      </div>
+
+      @for (item of [
+        { key: 'reputation',        label: 'Reputation',         val: percentiles()!.reputation },
+        { key: 'accuracy',          label: 'Accuracy',           val: percentiles()!.accuracy },
+        { key: 'notebookCompletion',label: 'Notebook',           val: percentiles()!.notebookCompletion },
+        { key: 'sessionEfficiency', label: 'Session efficiency', val: percentiles()!.sessionEfficiency }
+      ]; track item.key) {
+        <div class="percentile-row">
+          <span class="percentile-row__label">{{ item.label }}</span>
+          <df-progress-bar
+            [value]="item.val"
+            [variant]="item.val >= 75 ? 'green' : item.val >= 40 ? 'amber' : 'red'"
+            [showLabel]="true"
+          />
+          <df-badge
+            [label]="getPercentileLabel(item.val)"
+            [variant]="getPercentileVariant(item.val)"
+            size="sm"
+          />
+        </div>
+      }
+
+      @if (playStyle()) {
+        <div class="ranking-panel__style">
+          <span class="ranking-panel__style-label">Play style</span>
+          <span class="ranking-panel__style-val">{{ playStyle() }}</span>
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="ranking-panel__empty">Search for a player to see their percentile profile.</p>
+  }
+
+  <!-- Top detectives leaderboard -->
+  <div class="ranking-panel__leaderboard">
+    <div class="ranking-panel__leaderboard-title">Top detectives by reputation</div>
+    @for (player of topPlayers(); track player.id; let i = $index) {
+      <div
+        class="leaderboard-row"
+        [class.leaderboard-row--active]="player.name === gameData.player()?.name"
+      >
+        <span class="leaderboard-row__rank">#{{ i + 1 }}</span>
+        <span class="leaderboard-row__name">{{ player.name }}</span>
+        <span class="leaderboard-row__style">{{ player.playStyle }}</span>
+        <df-progress-bar
+          [value]="player.reputation"
+          [variant]="player.reputation >= 80 ? 'green' : 'amber'"
+          [showLabel]="false"
+        />
+        <span class="leaderboard-row__score">{{ player.reputation }}</span>
+      </div>
+    }
+  </div>
+</section>

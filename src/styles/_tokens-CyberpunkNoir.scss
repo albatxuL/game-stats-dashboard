@@ -1,0 +1,152 @@
+// ============================================================
+// THEME: CYBER-NOIR (Altered Carbon / Blade Runner 2049)
+// ============================================================
+
+:root {
+  // --- Paleta Base (El Vacío de la Ciudad) ---
+  --c-bg:           #020406; // Negro casi absoluto, azulado
+  --c-bg-card:      #080b12; // Translucidez oscura
+  --c-bg-elevated:  #0d121d;
+  --c-bg-overlay:   rgba(10, 15, 25, 0.85);
+
+  --c-border:       #162030;
+  --c-border-glow:  #00f2ff; // El alma de la UI
+
+  // --- Colores Neón (Emisivos) ---
+  --c-cyan:         #00f2ff;
+  --c-cyan-dim:     #003d42;
+  --c-cyan-glow:    rgba(0, 242, 255, 0.2);
+
+  --c-magenta:      #ff00ff; // "Love" de Blade Runner
+  --c-magenta-dim:  #4a004a;
+  
+  --c-amber:        #ffb800; // Luces de sodio en la lluvia
+  --c-amber-light:  #ffe08a;
+  --c-amber-dim:    #4a3500;
+  --c-amber-glow:   rgba(255, 184, 0, 0.15);
+
+  --c-green:        #00ff9d;
+  --c-red:          #ff2a5d;
+  --c-blue:         #2a5fff;
+
+  --c-text-primary:   #e0f7fa; // Blanco frío
+  --c-text-secondary: #8295a5; // Gris metalizado
+  --c-text-muted:     #435261;
+  --c-text-accent:    var(--c-cyan);
+
+  // --- Tipografía Sci-Fi ---
+  --font-display: 'Orbitron', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --font-body:    'Inter', sans-serif;
+
+  // --- Efectos Visuales ---
+  --radius-sm: 0px;
+  --radius-md: 1px;
+  --radius-lg: 2px;
+
+  --shadow-card:   0 0 20px rgba(0,0,0,0.9), 0 0 0 1px var(--c-border);
+  --shadow-glow:   0 0 15px var(--c-cyan-glow), inset 0 0 10px rgba(0, 242, 255, 0.05);
+  --shadow-inset:  inset 0 0 15px rgba(0,0,0,0.5);
+
+  --ease-out:      cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-base: 250ms;
+}
+
+// ── OVERRIDES DE COMPONENTES ──
+
+// Estilo de tarjeta: Vidrio esmerilado (Glassmorphism)
+.stat-card {
+  background: linear-gradient(135deg, var(--c-bg-card), #05070a) !important;
+  border: 1px solid var(--c-border) !important;
+  border-left: 2px solid var(--c-cyan) !important;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(45deg, transparent 95%, rgba(0, 242, 255, 0.1) 100%);
+  }
+
+  &:hover {
+    border-left-color: var(--c-magenta) !important;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.1), 0 0 0 1px var(--c-cyan-dim);
+    transform: translateY(-2px);
+  }
+}
+
+.stat-number__value {
+  font-family: var(--font-display) !important;
+  color: var(--c-cyan);
+  text-shadow: 0 0 8px var(--c-cyan-glow);
+  letter-spacing: 2px;
+}
+
+// Notebook / Paneles: Grid de escaneo
+.notebook {
+  background-color: var(--c-bg) !important;
+  background-image: 
+    radial-gradient(var(--c-cyan-dim) 0.5px, transparent 0.5px) !important;
+  background-size: 15px 15px !important;
+  border: 1px solid var(--c-border) !important;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+}
+
+.notebook__title {
+  font-family: var(--font-display) !important;
+  color: var(--c-magenta) !important;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px var(--c-magenta-dim);
+}
+
+// Topbar: Look de sensor de policia
+.app-topbar {
+  background: rgba(2, 4, 6, 0.95) !important;
+  border-bottom: 1px solid var(--c-cyan-dim) !important;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.app-topbar__title {
+  font-family: var(--font-display) !important;
+  color: var(--c-text-primary) !important;
+}
+
+// Progress Bars: Tubos de energía
+.progress__track {
+  background: var(--c-bg-elevated) !important;
+  height: 4px !important;
+  border: none !important;
+}
+
+.progress__fill {
+  box-shadow: 0 0 10px var(--c-cyan);
+  background: var(--c-cyan) !important;
+}
+
+// Scanline: Sutil y digital
+.app-scanline {
+  opacity: 0.1;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 242, 255, 0.2) 50%,
+    transparent 100%
+  ) !important;
+}
+
+// Case tabs: Hologramas activos
+.case-tab--active {
+  background: rgba(0, 242, 255, 0.05) !important;
+  border-color: var(--c-cyan) !important;
+  &::before {
+    content: '▶';
+    position: absolute;
+    left: -10px;
+    color: var(--c-cyan);
+    font-size: 10px;
+  }
+}

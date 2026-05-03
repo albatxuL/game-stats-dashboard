@@ -1,0 +1,59 @@
+<div class="player-search">
+  <div class="player-search__input-wrap">
+    <span class="player-search__icon">🔎</span>
+    <input
+      class="player-search__input"
+      type="text"
+      placeholder="Search detective..."
+      [value]="query()"
+      (input)="onInput($any($event.target).value)"
+      (focus)="isOpen.set(query().length > 0)"
+      autocomplete="off"
+      aria-label="Search player"
+    />
+    @if (query()) {
+      <button class="player-search__clear" (click)="clearSearch()" aria-label="Clear search">✕</button>
+    }
+  </div>
+
+  @if (isOpen() && suggestions().length > 0) {
+    <ul class="player-search__dropdown" role="listbox">
+      @for (player of suggestions(); track player.id) {
+        <li
+          class="player-search__option"
+          [class.player-search__option--outlier]="player.isOutlier"
+          role="option"
+          (click)="selectPlayer(player)"
+          (keydown.enter)="selectPlayer(player)"
+          tabindex="0"
+        >
+          <div class="player-search__option-avatar">
+            {{ player.name.charAt(0) }}
+          </div>
+          <div class="player-search__option-info">
+            <span class="player-search__option-name">{{ player.name }}</span>
+            <span class="player-search__option-rank">{{ player.rank }} · {{ player.casesCompleted }} cases</span>
+          </div>
+          <div class="player-search__option-badges">
+            <df-badge
+              [label]="player.playStyle"
+              [variant]="getPlayStyleVariant(player.playStyle)"
+              size="sm"
+            />
+            @if (player.isOutlier) {
+              <df-badge label="outlier" variant="danger" size="sm" />
+            }
+          </div>
+        </li>
+      }
+    </ul>
+  }
+
+  @if (activePlayer()) {
+    <div class="player-search__active">
+      <span class="player-search__active-label">Viewing</span>
+      <span class="player-search__active-name">{{ activePlayer()!.name }}</span>
+      <span class="player-search__active-rank">{{ activePlayer()!.rank }}</span>
+    </div>
+  }
+</div>

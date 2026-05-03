@@ -1,0 +1,36 @@
+<section class="heatmap-panel" aria-label="Correlation heatmap">
+  <div class="heatmap-panel__header">
+    <div>
+      <h2 class="heatmap-panel__title">Correlation Analysis</h2>
+      <p class="heatmap-panel__subtitle">Pearson r between key metrics across all players</p>
+    </div>
+    <div class="heatmap-panel__legend">
+      <span class="heatmap-panel__legend-item heatmap-panel__legend-item--pos">Positive</span>
+      <span class="heatmap-panel__legend-item heatmap-panel__legend-item--neg">Negative</span>
+    </div>
+  </div>
+
+  <div class="heatmap-panel__grid">
+    @for (cell of cells(); track trackCell($index, cell)) {
+      <div
+        class="heatmap-cell"
+        [class]="'heatmap-cell--' + cell.strength"
+        [style.background]="getCellColor(cell.value)"
+      >
+        <span class="heatmap-cell__value" [style.color]="getTextColor(cell.value)">
+          {{ cell.value > 0 ? '+' : '' }}{{ cell.value }}
+        </span>
+        <div class="heatmap-cell__labels">
+          <span class="heatmap-cell__row">{{ cell.row }}</span>
+          <span class="heatmap-cell__sep">↔</span>
+          <span class="heatmap-cell__col">{{ cell.col }}</span>
+        </div>
+        <span class="heatmap-cell__strength">{{ getStrengthLabel(cell) }}</span>
+      </div>
+    }
+  </div>
+
+  <p class="heatmap-panel__note">
+    r ≥ 0.7 strong · 0.4–0.7 moderate · 0.2–0.4 weak · &lt; 0.2 negligible
+  </p>
+</section>

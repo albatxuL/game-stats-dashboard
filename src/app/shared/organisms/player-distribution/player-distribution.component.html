@@ -1,0 +1,34 @@
+<section class="dist-panel" aria-label="Player distribution histograms">
+  <div class="dist-panel__header">
+    <div>
+      <h2 class="dist-panel__title">Distribution Analysis</h2>
+      <p class="dist-panel__subtitle">Frequency histogram — IBM DS: EDA</p>
+    </div>
+  </div>
+
+  <!-- Metric selector -->
+  <div class="dist-panel__tabs" role="tablist">
+    @for (m of metrics; track m.key) {
+      <button
+        class="dist-tab"
+        [class.dist-tab--active]="activeMetric === m.key"
+        (click)="switchMetric(m.key)"
+        role="tab"
+        [attr.aria-selected]="activeMetric === m.key"
+      >
+        {{ m.label }}
+      </button>
+    }
+  </div>
+
+  <!-- Chart -->
+  <div class="dist-panel__chart">
+    <canvas #distCanvas aria-label="Distribution histogram"></canvas>
+  </div>
+
+  <!-- IBM DS: annotation -->
+  <p class="dist-panel__note">
+    Histogram shows frequency distribution across {{ analytics.aggregate()?.totalPlayers ?? 0 }} players.
+    Shape indicates whether data is normally distributed, skewed, or bimodal.
+  </p>
+</section>

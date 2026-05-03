@@ -1,0 +1,179 @@
+<div class="method-page">
+
+  <!-- Back -->
+  <a class="method-page__back" routerLink="/">
+    <span>←</span> Back to overview
+  </a>
+
+  <header class="method-page__header">
+    <h1 class="method-page__title">Methodology</h1>
+    <p class="method-page__subtitle">
+      How metrics are computed, how play styles are assigned, and which IBM Data Science concepts apply.
+    </p>
+  </header>
+
+  <!-- ── Section 1: Metrics ── -->
+  <section class="method-section">
+    <h2 class="method-section__title">📐 Metric definitions</h2>
+    <p class="method-section__intro">
+      All metrics are derived from raw session data. No subjective scoring — every value is computed deterministically from player actions.
+    </p>
+
+    <div class="method-metrics">
+      @for (m of metrics; track m.id) {
+        <div class="metric-card">
+          <div class="metric-card__header">
+            <span class="metric-card__name">{{ m.name }}</span>
+            <span class="metric-card__unit">{{ m.unit }}</span>
+          </div>
+          <p class="metric-card__desc">{{ m.description }}</p>
+          <div class="metric-card__formula">
+            <span class="metric-card__formula-label">Formula</span>
+            <code>{{ m.derivedFrom }}</code>
+          </div>
+          <div class="metric-card__footer">
+            <span class="metric-card__ibm">
+              <span class="metric-card__ibm-icon">📊</span>
+              IBM DS: {{ m.ibmConcept }}
+            </span>
+            <span class="metric-card__range">{{ m.range }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ── Section 2: Play Style segmentation ── -->
+  <section class="method-section">
+    <h2 class="method-section__title">🧩 Play style segmentation</h2>
+    <p class="method-section__intro">
+      Play styles are assigned using a <strong>rule-based segmentation</strong> — a simplified form of supervised classification.
+      The assignment is deterministic and hierarchical: Completionist → Speedrunner → Manipulator → Balanced (catch-all).
+      This mirrors the IBM DS approach to feature-based clustering with explicit decision thresholds.
+    </p>
+
+    <!-- Decision tree visual -->
+    <div class="method-tree">
+      <div class="method-tree__node method-tree__node--root">Start: evaluate player metrics</div>
+      <div class="method-tree__branches">
+        <div class="method-tree__branch">
+          <div class="method-tree__condition">notebookAvg ≥ 87% AND session > P60?</div>
+          <div class="method-tree__leaf method-tree__leaf--green">✓ Completionist</div>
+        </div>
+        <div class="method-tree__branch">
+          <div class="method-tree__condition">sessionEfficiency ≥ 85 AND accuracy ≥ 80%?</div>
+          <div class="method-tree__leaf method-tree__leaf--blue">✓ Speedrunner</div>
+        </div>
+        <div class="method-tree__branch">
+          <div class="method-tree__condition">hiddenRate ≥ 0.65?</div>
+          <div class="method-tree__leaf method-tree__leaf--red">✓ Manipulator</div>
+        </div>
+        <div class="method-tree__branch">
+          <div class="method-tree__condition">ninguna condición anterior</div>
+          <div class="method-tree__leaf method-tree__leaf--amber">✓ Balanced</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Style cards -->
+    <div class="method-styles">
+      @for (s of styles; track s.style) {
+        <div class="style-card">
+          <div class="style-card__header">
+            <span class="style-card__emoji">{{ s.emoji }}</span>
+            <df-badge [label]="s.style" [variant]="s.variant" size="md" />
+          </div>
+
+          <p class="style-card__desc">{{ s.description }}</p>
+
+          <div class="style-card__signal">
+            <span class="style-card__signal-label">Primary signal</span>
+            <code class="style-card__signal-code">{{ s.primarySignal }}</code>
+          </div>
+
+          <!-- Thresholds table -->
+          <div class="style-card__thresholds">
+            <div class="style-card__threshold-header">
+              <span>Metric</span>
+              <span>Condition</span>
+              <span>Role</span>
+            </div>
+            @for (t of s.thresholds; track t.metric) {
+              <div class="style-card__threshold-row">
+                <span class="style-card__threshold-metric">{{ t.metric }}</span>
+                <code class="style-card__threshold-cond">{{ t.condition }}</code>
+                <span class="style-card__threshold-weight"
+                  [class.style-card__threshold-weight--primary]="t.weight.startsWith('Primario')"
+                >{{ t.weight }}</span>
+              </div>
+            }
+          </div>
+
+          <!-- Typical profile -->
+          <div class="style-card__profile">
+            <span class="style-card__profile-label">Typical profile</span>
+            <div class="style-card__profile-grid">
+              <span>Rep: {{ s.typicalProfile.rep }}</span>
+              <span>Notebook: {{ s.typicalProfile.notebook }}</span>
+              <span>Hidden: {{ s.typicalProfile.hidden }}</span>
+              <span>Speed: {{ s.typicalProfile.speed }}</span>
+            </div>
+          </div>
+
+          <p class="style-card__ibm">📊 {{ s.ibmNote }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ── Section 3: Correlations ── -->
+  <section class="method-section">
+    <h2 class="method-section__title">🔗 Correlation interpretations</h2>
+    <p class="method-section__intro">
+      Pearson r values are pre-computed from the population of {{ metrics.length > 0 ? '25' : '—' }} players.
+      In a real system these would be recalculated dynamically. The values show which behaviors predict better outcomes.
+    </p>
+
+    <div class="method-correlations">
+      @for (c of correlations; track c.x) {
+        <div class="corr-row">
+          <div class="corr-row__pair">
+            <span class="corr-row__var">{{ c.x }}</span>
+            <span class="corr-row__arrow">↔</span>
+            <span class="corr-row__var">{{ c.y }}</span>
+          </div>
+          <div class="corr-row__r" [style.color]="getCorrelationColor(c.r)">
+            r = {{ c.r > 0 ? '+' : '' }}{{ c.r }}
+            <span class="corr-row__strength">({{ getStrength(c.r) }})</span>
+          </div>
+          <p class="corr-row__interpretation">{{ c.interpretation }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ── Section 4: IBM DS index ── -->
+  <section class="method-section">
+    <h2 class="method-section__title">📚 IBM Data Science concepts applied</h2>
+    <div class="method-ibm-table">
+      @for (row of [
+        ['Descriptive Statistics',    'Global Overview',     'Mean, median, σ, IQR, Q1/Q3 de reputación y notebook'],
+        ['Feature Engineering',       'All views',           'hidden_rate, session_efficiency, notebook_avg derivados de datos crudos'],
+        ['Data Segmentation',         'Play Style',          'Segmentación jerárquica basada en umbrales de features'],
+        ['Correlation Analysis',      'Heatmap',             'Pearson r entre pares de métricas clave'],
+        ['Distribution Analysis',     'Histograms',          'Frecuencia de jugadores por bins de reputación, notebook y duración'],
+        ['Outlier Detection',         'Roster',              'z-score y reglas de umbral para identificar comportamientos atípicos'],
+        ['Percentile Ranking',        'Player Profile',      'Posición relativa del jugador vs toda la población'],
+        ['EDA (Exploratory DA)',      'Global Overview',     'Vista inicial sin hipótesis: tendencias, distribuciones, correlaciones'],
+        ['Data Visualization',        'All charts',          'Elegir el gráfico correcto por tipo de dato: histograma, radar, barras, heatmap'],
+      ]; track row[0]) {
+        <div class="ibm-row">
+          <span class="ibm-row__concept">{{ row[0] }}</span>
+          <span class="ibm-row__where">{{ row[1] }}</span>
+          <span class="ibm-row__how">{{ row[2] }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+</div>
