@@ -105,3 +105,42 @@ describe('RosterFiltersComponent', () => {
     expect(reset).toBeTruthy();
   });
 });
+
+// ── filterChanged output ──
+describe('filterChanged output', () => {
+  it('should emit filterChanged when setStyle is called', () => {
+    let emitted = false;
+    fixture.componentInstance.filterChanged.subscribe(() => emitted = true);
+    component.setStyle('Speedrunner');
+    expect(emitted).toBeTrue();
+  });
+
+  it('should emit filterChanged when reset is called', () => {
+    let emitted = false;
+    fixture.componentInstance.filterChanged.subscribe(() => emitted = true);
+    component.reset();
+    expect(emitted).toBeTrue();
+  });
+
+  it('should emit filterChanged when setCases is called', () => {
+    let emitted = false;
+    fixture.componentInstance.filterChanged.subscribe(() => emitted = true);
+    component.setCases('3');
+    expect(emitted).toBeTrue();
+  });
+
+  it('should emit filterChanged when toggleAbandoned is called', () => {
+    let emitted = false;
+    fixture.componentInstance.filterChanged.subscribe(() => emitted = true);
+    component.toggleAbandoned();
+    expect(emitted).toBeTrue();
+  });
+
+  it('should emit filterChanged when minRep changes', () => {
+    let count = 0;
+    fixture.componentInstance.filterChanged.subscribe(() => count++);
+    component.setMinRep(40);
+    component.setMaxRep(80);
+    expect(count).toBe(2);
+  });
+});

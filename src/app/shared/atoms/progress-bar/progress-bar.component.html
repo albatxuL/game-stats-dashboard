@@ -4,7 +4,7 @@
       @if (label()) {
         <span class="progress__label">{{ label() }}</span>
       }
-      <span class="progress__value">{{ Math.round(percent()) }}%</span>
+      <span class="progress__value">{{ percent() | number:"1.0-0" }}%</span>
     </div>
   }
   <div class="progress__track">

@@ -12,9 +12,9 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { PlayerSummary } from '../../core/models/analytics.model';
 import { StatisticsEngine } from '../../core/engine/statistics.engine';
+import { DecimalPipe } from '@angular/common';
 import { BadgeComponent } from '../../shared/atoms/badge/badge.component';
 import { ProgressBarComponent } from '../../shared/atoms/progress-bar/progress-bar.component';
-import { DecimalPipe } from '@angular/common';
 
 interface MetricComparison {
   label: string;
@@ -28,7 +28,7 @@ interface MetricComparison {
 @Component({
   selector: 'df-compare',
   standalone: true,
-  imports: [RouterLink, BadgeComponent, ProgressBarComponent, DecimalPipe],
+  imports: [RouterLink, DecimalPipe, BadgeComponent, ProgressBarComponent],
   templateUrl: './compare.component.html',
   styleUrls: ['./compare.component.scss']
 })
@@ -42,9 +42,6 @@ export class CompareComponent implements OnInit, OnDestroy {
   readonly isLoading = signal(true);
   readonly error     = signal<string | null>(null);
 
-  readonly Math = Math;
-
-  private players$ = toObservable(this.analytics.players);
   private sub?: Subscription;
 
   ngOnInit(): void {
@@ -59,7 +56,7 @@ export class CompareComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.sub = this.players$.pipe(
+    this.sub = toObservable(this.analytics.players).pipe(
       filter(players => players.length > 0),
       take(1)
     ).subscribe(players => {
@@ -127,6 +124,8 @@ export class CompareComponent implements OnInit, OnDestroy {
     const zB = StatisticsEngine.zScore(b.reputation, StatisticsEngine.mean(reps), StatisticsEngine.stdDev(reps));
     return Math.round(Math.abs(zA - zB) * 100) / 100;
   });
+
+  readonly Math = Math; // expose to template
 
   getStyleVariant(style: string): 'success' | 'info' | 'danger' | 'warning' {
     const map: Record<string, 'success' | 'info' | 'danger' | 'warning'> = {

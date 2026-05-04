@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, input, computed } from '@angular/core';
 
 export type ProgressVariant = 'amber' | 'green' | 'red' | 'blue' | 'muted';
@@ -5,12 +6,11 @@ export type ProgressVariant = 'amber' | 'green' | 'red' | 'blue' | 'muted';
 @Component({
   selector: 'df-progress-bar',
   standalone: true,
+  imports: [DecimalPipe],
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss']
 })
 export class ProgressBarComponent {
-  readonly Math = Math;
-  
   readonly value = input<number>(0);       // 0–100
   readonly max = input<number>(100);
   readonly variant = input<ProgressVariant>('amber');

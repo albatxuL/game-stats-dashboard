@@ -99,6 +99,10 @@ describe('CompareComponent', () => {
     expect(component.getStyleVariant('Manipulator')).toBe('danger');
   });
 
+  it('should expose Math to template', () => {
+    expect(component.Math).toBe(Math);
+  });
+
   it('should render player names in template', () => {
     const text = fixture.nativeElement.textContent;
     expect(text).toContain('Alba');

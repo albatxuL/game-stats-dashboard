@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 import { BadgeComponent } from '../../atoms/badge/badge.component';
@@ -16,24 +16,34 @@ export class RosterFiltersComponent {
   readonly filters = this.analytics.rosterFilters;
   readonly styles  = ['Completionist', 'Speedrunner', 'Manipulator', 'Balanced'] as const;
 
+  // Emits after every filter mutation so parent can sync URL
+  readonly filterChanged = output<void>();
+
   setStyle(style: string | null): void {
     this.analytics.updateRosterFilter({ style });
+    this.filterChanged.emit();
   }
 
   setCases(value: string): void {
-    this.analytics.updateRosterFilter({ casesCompleted: value === '' ? null : parseInt(value, 10) });
+    this.analytics.updateRosterFilter({
+      casesCompleted: value === '' ? null : parseInt(value, 10)
+    });
+    this.filterChanged.emit();
   }
 
   setMinRep(value: number): void {
     this.analytics.updateRosterFilter({ minRep: value });
+    this.filterChanged.emit();
   }
 
   setMaxRep(value: number): void {
     this.analytics.updateRosterFilter({ maxRep: value });
+    this.filterChanged.emit();
   }
 
   toggleAbandoned(): void {
     this.analytics.updateRosterFilter({ showAbandoned: !this.filters().showAbandoned });
+    this.filterChanged.emit();
   }
 
   reset(): void {
@@ -41,6 +51,7 @@ export class RosterFiltersComponent {
       style: null, minRep: 0, maxRep: 100,
       casesCompleted: null, showAbandoned: true
     });
+    this.filterChanged.emit();
   }
 
   readonly isActive = () => {
