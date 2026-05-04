@@ -1,0 +1,14 @@
+@if (hasError()) {
+  <div class="error-boundary" role="alert">
+    <span class="error-boundary__icon">⚠</span>
+    <div class="error-boundary__content">
+      <span class="error-boundary__label">{{ label() }} unavailable</span>
+      @if (errorMsg()) {
+        <code class="error-boundary__msg">{{ errorMsg() }}</code>
+      }
+    </div>
+    <button class="error-boundary__retry" (click)="retry()">Retry</button>
+  </div>
+} @else {
+  <ng-content />
+}

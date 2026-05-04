@@ -93,17 +93,32 @@
     <section class="global-page__roster">
       <div class="global-page__roster-header">
         <div class="global-page__roster-label">
-          All detectives
+          Detectives
           <span class="global-page__roster-count">
-            ({{ players().length }} total · {{ agg()!.dropoutCount }} abandoned · {{ agg()!.totalPlayers - agg()!.dropoutCount }} completed)
+            ({{ players().length }} total · {{ agg()!.dropoutCount }} isDrop · {{ agg()!.totalPlayers - agg()!.dropoutCount }} completed)
           </span>
         </div>
         <!-- Pagination info -->
         <div class="global-page__pagination-info">
-          Showing {{ currentPage() * pageSize + 1 }}–{{ minOf(players().length, (currentPage() + 1) * pageSize) }}
-          of {{ players().length }}
+          Showing {{ currentPage() * pageSize + 1 }}–{{ minOf(filteredRoster().length, (currentPage() + 1) * pageSize) }}
+          of {{ filteredRoster().length }}
         </div>
       </div>
+
+      <!-- Filters -->
+      <df-roster-filters />
+
+      <!-- Compare mode banner -->
+      @if (compareId()) {
+        <div class="compare-banner">
+          <span class="compare-banner__icon">⇄</span>
+          <span class="compare-banner__text">
+            <strong>{{ selectedComparePlayerName() }}</strong>
+            selected — click another detective to compare
+          </span>
+          <button class="compare-banner__cancel" (click)="compareId.set(null)">✕ Cancel</button>
+        </div>
+      }
 
       <!-- Roster grid -->
       <div class="global-page__roster-grid">
@@ -111,7 +126,7 @@
           <button
             class="roster-card"
             [class.roster-card--outlier]="p.isOutlier"
-            [class.roster-card--abandoned]="p.isDrop"
+            [class.roster-card--isDrop]="p.isDrop"
             (click)="navigateToPlayer(p)"
             [attr.aria-label]="'View profile of ' + p.name"
           >
@@ -142,10 +157,21 @@
               <span class="roster-card__tag roster-card__tag--outlier">⚠ outlier estadístico</span>
             }
             @if (p.isDrop) {
-              <span class="roster-card__tag roster-card__tag--abandoned">⊘ partida abandonada</span>
+              <span class="roster-card__tag roster-card__tag--isDrop">⊘ partida abandonada</span>
             }
 
-            <span class="roster-card__cta">Ver perfil →</span>
+            <div class="roster-card__actions">
+              <span class="roster-card__cta">Ver perfil →</span>
+              <button
+                class="roster-card__compare-btn"
+                [class.roster-card__compare-btn--selected]="compareId() === p.id"
+                (click)="$event.stopPropagation(); selectForCompare(p.id)"
+                [attr.aria-label]="compareId() === p.id ? 'Deselect for compare' : 'Select for compare'"
+                [title]="compareId() ? (compareId() === p.id ? 'Deselect' : 'Compare with ' + p.name) : 'Select to compare'"
+              >
+                {{ compareId() === p.id ? '✓ Selected' : '⇄' }}
+              </button>
+            </div>
           </button>
         }
       </div>
@@ -190,7 +216,8 @@
       <df-correlation-heatmap />
     </section>
 
-    <section class="global-page__section">
+    <section class="global-page__section global-page__section--cols">
+      <df-scatter-plot />
       <df-player-ranking />
     </section>
 

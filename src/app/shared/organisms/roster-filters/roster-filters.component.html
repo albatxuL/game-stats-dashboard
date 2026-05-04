@@ -1,0 +1,77 @@
+<div class="roster-filters">
+
+  <!-- Play style -->
+  <div class="rf-group">
+    <span class="rf-label">Style</span>
+    <div class="rf-chips">
+      <button
+        class="rf-chip"
+        [class.rf-chip--active]="filters().style === null"
+        (click)="setStyle(null)"
+      >All</button>
+      @for (s of styles; track s) {
+        <button
+          class="rf-chip"
+          [class.rf-chip--active]="filters().style === s"
+          (click)="setStyle(s)"
+        >
+          <df-badge [label]="s" [variant]="getStyleVariant(s)" size="sm" />
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Reputation range -->
+  <div class="rf-group">
+    <span class="rf-label">Reputation</span>
+    <div class="rf-range">
+      <span class="rf-range-val">{{ filters().minRep }}</span>
+      <input
+        type="range" min="0" max="100" step="5"
+        [value]="filters().minRep"
+        (input)="setMinRep(+$any($event.target).value)"
+        class="rf-slider"
+        aria-label="Minimum reputation"
+      />
+      <span class="rf-range-sep">–</span>
+      <input
+        type="range" min="0" max="100" step="5"
+        [value]="filters().maxRep"
+        (input)="setMaxRep(+$any($event.target).value)"
+        class="rf-slider"
+        aria-label="Maximum reputation"
+      />
+      <span class="rf-range-val">{{ filters().maxRep }}</span>
+    </div>
+  </div>
+
+  <!-- Cases completed -->
+  <div class="rf-group">
+    <span class="rf-label">Cases</span>
+    <div class="rf-chips">
+      <button class="rf-chip" [class.rf-chip--active]="filters().casesCompleted === null" (click)="setCases('')">All</button>
+      @for (n of [1, 2, 3, 4]; track n) {
+        <button class="rf-chip" [class.rf-chip--active]="filters().casesCompleted === n" (click)="setCases(n.toString())">{{ n }}</button>
+      }
+    </div>
+  </div>
+
+  <!-- Abandoned toggle -->
+  <div class="rf-group rf-group--inline">
+    <button
+      class="rf-toggle"
+      [class.rf-toggle--active]="!filters().showAbandoned"
+      (click)="toggleAbandoned()"
+      [attr.aria-pressed]="!filters().showAbandoned"
+    >
+      <span class="rf-toggle__dot"></span>
+      Hide abandoned
+    </button>
+  </div>
+
+  <!-- Reset -->
+  @if (isActive()) {
+    <button class="rf-reset" (click)="reset()">✕ Reset filters</button>
+  }
+
+</div>

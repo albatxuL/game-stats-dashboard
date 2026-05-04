@@ -1,0 +1,23 @@
+<section class="scatter-panel" aria-label="Scatter plot: hidden decisions vs reputation">
+  <div class="scatter-panel__header">
+    <div>
+      <h2 class="scatter-panel__title">Hidden Decisions vs Reputation</h2>
+      <p class="scatter-panel__subtitle">
+        IBM DS: Pearson r =
+        <span
+          class="scatter-panel__r"
+          [style.color]="corrValue() < 0 ? 'var(--c-red-light)' : 'var(--c-green-light)'"
+        >
+          {{ corrValue() > 0 ? '+' : '' }}{{ corrValue() }}
+        </span>
+        · Click a point to open the player profile
+      </p>
+    </div>
+    <div class="scatter-panel__legend-note">
+      <span class="scatter-panel__triangle">▲</span> = statistical outlier
+    </div>
+  </div>
+  <div class="scatter-panel__chart">
+    <canvas #scatterCanvas aria-label="Scatter plot"></canvas>
+  </div>
+</section>

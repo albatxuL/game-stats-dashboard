@@ -8,6 +8,8 @@ import { BadgeComponent } from '../../shared/atoms/badge/badge.component';
 import { GlobalStatsOverviewComponent } from '../../shared/organisms/global-stats-overview/global-stats-overview.component';
 import { CorrelationHeatmapComponent }  from '../../shared/organisms/correlation-heatmap/correlation-heatmap.component';
 import { PlayerDistributionComponent }  from '../../shared/organisms/player-distribution/player-distribution.component';
+import { RosterFiltersComponent } from '../../shared/organisms/roster-filters/roster-filters.component';
+import { ScatterPlotComponent }  from '../../shared/organisms/scatter-plot/scatter-plot.component';
 import { PlayerRankingComponent }       from '../../shared/organisms/player-ranking/player-ranking.component';
 
 @Component({
@@ -20,7 +22,9 @@ import { PlayerRankingComponent }       from '../../shared/organisms/player-rank
     GlobalStatsOverviewComponent,
     CorrelationHeatmapComponent,
     PlayerDistributionComponent,
+    ScatterPlotComponent,
     PlayerRankingComponent,
+    RosterFiltersComponent,
   ],
   templateUrl: './global-overview.component.html',
   styleUrls: ['./global-overview.component.scss']
@@ -32,7 +36,8 @@ export class GlobalOverviewComponent implements OnInit {
   readonly isLoading = this.analytics.isLoading;
   readonly hasError  = this.analytics.hasError;
   readonly agg       = this.analytics.aggregate;
-  readonly players   = this.analytics.players;
+  readonly players        = this.analytics.players;
+  readonly filteredRoster = this.analytics.filteredRoster;
   readonly searchQuery = this.analytics.searchQuery;
 
   // ── Search suggestions ──
@@ -42,22 +47,18 @@ export class GlobalOverviewComponent implements OnInit {
     return this.players().filter(p => p.name.toLowerCase().includes(q)).slice(0, 6);
   });
 
-  readonly abandonedCount = computed(() => 
-    this.agg()?.dropoutCount ?? 0
-  );
-
   // ── Pagination ──
   readonly pageSize = 6;
   readonly currentPage = signal(0);
 
   readonly paginatedPlayers = computed(() => {
-    const all = this.players();
+    const all = this.filteredRoster();
     const start = this.currentPage() * this.pageSize;
     return all.slice(start, start + this.pageSize);
   });
 
   readonly totalPages = computed(() =>
-    Math.ceil(this.players().length / this.pageSize)
+    Math.ceil(this.filteredRoster().length / this.pageSize)
   );
 
   readonly pageNumbers = computed(() =>
@@ -66,6 +67,20 @@ export class GlobalOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.analytics.index()) this.analytics.load();
+  }
+
+  readonly compareId = signal<string | null>(null);
+
+  selectForCompare(playerId: string): void {
+    const current = this.compareId();
+    if (!current) {
+      this.compareId.set(playerId);
+    } else if (current === playerId) {
+      this.compareId.set(null); // deselect
+    } else {
+      this.router.navigate(['/compare', current, playerId]);
+      this.compareId.set(null);
+    }
   }
 
   onSearchInput(value: string): void {
@@ -101,4 +116,10 @@ export class GlobalOverviewComponent implements OnInit {
     };
     return map[style] ?? 'warning';
   }
+
+  readonly selectedComparePlayerName = computed(() => {
+    const id = this.compareId();
+    if (!id) return null;
+    return this.players().find(p => p.id === id)?.name ?? null;
+  });
 }

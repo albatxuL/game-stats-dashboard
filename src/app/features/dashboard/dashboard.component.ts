@@ -1,17 +1,20 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { GameDataService }  from '../../core/services/game-data.service';
+import { combineLatest, Subscription } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { GameDataService } from '../../core/services/game-data.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
 
 import { CaseSelectorComponent }     from '../../shared/organisms/case-selector/case-selector.component';
-import { SummaryCardsComponent }     from '../../shared/organisms/summary-cards/summary-cards.component';
-import { NotebookProgressComponent } from '../../shared/organisms/notebook-progress/notebook-progress.component';
-import { RadarChartComponent }       from '../../shared/organisms/radar-chart/radar-chart.component';
-import { ReputationBarsComponent }   from '../../shared/organisms/reputation-bars/reputation-bars.component';
-import { DecisionsPanelComponent }   from '../../shared/organisms/decisions-panel/decisions-panel.component';
-import { SessionTimelineComponent }  from '../../shared/organisms/session-timeline/session-timeline.component';
-import { AchievementsGridComponent } from '../../shared/organisms/achievements-grid/achievements-grid.component';
-import { PlayerRankingComponent }    from '../../shared/organisms/player-ranking/player-ranking.component';
+import { SummaryCardsComponent }      from '../../shared/organisms/summary-cards/summary-cards.component';
+import { NotebookProgressComponent }  from '../../shared/organisms/notebook-progress/notebook-progress.component';
+import { RadarChartComponent }        from '../../shared/organisms/radar-chart/radar-chart.component';
+import { ReputationBarsComponent }    from '../../shared/organisms/reputation-bars/reputation-bars.component';
+import { DecisionsPanelComponent }    from '../../shared/organisms/decisions-panel/decisions-panel.component';
+import { SessionTimelineComponent }   from '../../shared/organisms/session-timeline/session-timeline.component';
+import { AchievementsGridComponent }  from '../../shared/organisms/achievements-grid/achievements-grid.component';
+import { PlayerRankingComponent }     from '../../shared/organisms/player-ranking/player-ranking.component';
 
 @Component({
   selector: 'df-dashboard',
@@ -31,52 +34,49 @@ import { PlayerRankingComponent }    from '../../shared/organisms/player-ranking
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   readonly gameData  = inject(GameDataService);
   readonly analytics = inject(AnalyticsService);
-  private route      = inject(ActivatedRoute);
-  private router     = inject(Router);
+  private  route     = inject(ActivatedRoute);
+  private  router    = inject(Router);
 
   readonly isLoading = this.gameData.isLoading;
   readonly hasError  = this.gameData.hasError;
   readonly player    = this.gameData.player;
 
+  private players$   = toObservable(this.analytics.players);
+  private sub?: Subscription;
+
   ngOnInit(): void {
-    // Ensure analytics index is loaded for percentile ranking
     if (!this.analytics.index()) this.analytics.load();
 
-    // Load the player file indicated by the route param
     const playerId = this.route.snapshot.paramMap.get('id');
-    if (playerId) {
-      const playerEntry = this.analytics.players()
-        .find(p => p.id === playerId);
 
-      if (playerEntry) {
-        this.gameData.load(playerEntry.dataFile);
-      } else {
-        // Analytics not loaded yet — wait and retry
-        const sub = this.analytics.index()
-          ? this.waitForIndex(playerId)
-          : this.gameData.load();
-      }
-    } else {
-      // Fallback: load default
+    if (!playerId) {
       this.gameData.load();
+      return;
     }
+
+    // Use RxJS combineLatest to wait for analytics to load,
+    // then resolve the player file — no polling, no setInterval.
+    this.sub = combineLatest([
+      this.players$.pipe(
+        filter(players => players.length > 0),
+        take(1)
+      )
+    ]).subscribe(([players]) => {
+      const entry = players.find(p => p.id === playerId);
+      if (entry) {
+        this.gameData.load(entry.dataFile);
+      } else {
+        console.warn(`[Dashboard] Player ${playerId} not found — loading default`);
+        this.gameData.load();
+      }
+    });
   }
 
-  private waitForIndex(playerId: string): void {
-    // Poll until index loads, then load player file
-    const interval = setInterval(() => {
-      const entry = this.analytics.players().find(p => p.id === playerId);
-      if (entry) {
-        clearInterval(interval);
-        this.gameData.load(entry.dataFile);
-      } else if (this.analytics.hasError()) {
-        clearInterval(interval);
-        this.gameData.load(); // fallback to default
-      }
-    }, 100);
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   goBack(): void {

@@ -14,6 +14,12 @@ export const routes: Routes = [
         .then(m => m.DashboardComponent)
   },
   {
+    path: 'compare/:id1/:id2',
+    loadComponent: () =>
+      import('./features/compare/compare.component')
+        .then(m => m.CompareComponent)
+  },
+  {
     path: 'methodology',
     loadComponent: () =>
       import('./features/methodology/methodology.component')

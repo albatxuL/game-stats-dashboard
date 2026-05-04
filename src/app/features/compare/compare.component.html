@@ -1,0 +1,134 @@
+<div class="compare-page">
+
+  <a class="compare-page__back" routerLink="/">← All detectives</a>
+
+  @if (isLoading()) {
+    <div class="compare-page__loading">
+      <div class="compare-page__spinner"></div>
+      <span>Loading comparison...</span>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="compare-page__error">
+      <span>⚠</span><p>{{ error() }}</p>
+      <a routerLink="/" class="compare-page__error-link">← Return to overview</a>
+    </div>
+  }
+
+  @if (!isLoading() && !error() && playerA() && playerB()) {
+    <!-- Header -->
+    <header class="compare-page__header">
+      <h1 class="compare-page__title">Detective Comparison</h1>
+      <p class="compare-page__subtitle">IBM DS · Z-distance between profiles: {{ zDistance() }}</p>
+      <button class="compare-page__swap" (click)="swapPlayers()" title="Swap players">⇄ Swap</button>
+    </header>
+
+    <!-- Player cards -->
+    <div class="compare-page__players">
+
+      <!-- Player A -->
+      <div class="player-card" [class.player-card--winner]="winner() === 'a'">
+        @if (winner() === 'a') {
+          <span class="player-card__crown">🏆</span>
+        }
+        <div class="player-card__avatar">{{ playerA()!.name.charAt(0) }}</div>
+        <div class="player-card__info">
+          <span class="player-card__name">{{ playerA()!.name }}</span>
+          <span class="player-card__rank">{{ playerA()!.rank }}</span>
+          <df-badge [label]="playerA()!.playStyle" [variant]="getStyleVariant(playerA()!.playStyle)" size="sm" />
+          @if (playerA()!.isOutlier) {
+            <df-badge label="outlier" variant="danger" size="sm" />
+          }
+        </div>
+        <div class="player-card__score">
+          <span class="player-card__score-val">{{ scoreA() }}</span>
+          <span class="player-card__score-label">metrics won</span>
+        </div>
+      </div>
+
+      <div class="compare-page__vs">VS</div>
+
+      <!-- Player B -->
+      <div class="player-card player-card--right" [class.player-card--winner]="winner() === 'b'">
+        @if (winner() === 'b') {
+          <span class="player-card__crown">🏆</span>
+        }
+        <div class="player-card__score">
+          <span class="player-card__score-val">{{ scoreB() }}</span>
+          <span class="player-card__score-label">metrics won</span>
+        </div>
+        <div class="player-card__info player-card__info--right">
+          <span class="player-card__name">{{ playerB()!.name }}</span>
+          <span class="player-card__rank">{{ playerB()!.rank }}</span>
+          <df-badge [label]="playerB()!.playStyle" [variant]="getStyleVariant(playerB()!.playStyle)" size="sm" />
+          @if (playerB()!.isOutlier) {
+            <df-badge label="outlier" variant="danger" size="sm" />
+          }
+        </div>
+        <div class="player-card__avatar">{{ playerB()!.name.charAt(0) }}</div>
+      </div>
+    </div>
+
+    <!-- Metric comparison table -->
+    <div class="compare-metrics">
+      <div class="compare-metrics__header">
+        <span>{{ playerA()!.name }}</span>
+        <span>Metric</span>
+        <span>{{ playerB()!.name }}</span>
+      </div>
+
+      @for (m of metrics(); track m.label) {
+        <div class="metric-row" [class]="'metric-row--winner-' + m.winner">
+          <!-- A value + bar -->
+          <div class="metric-row__side metric-row__side--a">
+            <span class="metric-row__val"
+              [class.metric-row__val--winner]="m.winner === 'a'"
+            >{{ m.a | number:'1.0-1' }}{{ m.unit }}</span>
+            <div class="metric-row__bar metric-row__bar--a">
+              <df-progress-bar
+                [value]="m.a"
+                [max]="m.unit === '%' || m.unit === 'P' ? 100 : Math.max(m.a, m.b) * 1.1"
+                [variant]="m.winner === 'a' ? 'green' : 'muted'"
+                [thin]="true"
+              />
+            </div>
+          </div>
+
+          <!-- Label -->
+          <div class="metric-row__label">
+            <span>{{ m.label }}</span>
+            @if (m.winner === 'tie') {
+              <span class="metric-row__tie">tie</span>
+            }
+          </div>
+
+          <!-- B value + bar -->
+          <div class="metric-row__side metric-row__side--b">
+            <div class="metric-row__bar metric-row__bar--b">
+              <df-progress-bar
+                [value]="m.b"
+                [max]="m.unit === '%' || m.unit === 'P' ? 100 : Math.max(m.a, m.b) * 1.1"
+                [variant]="m.winner === 'b' ? 'green' : 'muted'"
+                [thin]="true"
+              />
+            </div>
+            <span class="metric-row__val"
+              [class.metric-row__val--winner]="m.winner === 'b'"
+            >{{ m.b | number:'1.0-1' }}{{ m.unit }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Profile links -->
+    <div class="compare-page__links">
+      <a [routerLink]="['/player', playerA()!.id]" class="compare-page__link">
+        View {{ playerA()!.name }}'s full profile →
+      </a>
+      <a [routerLink]="['/player', playerB()!.id]" class="compare-page__link">
+        View {{ playerB()!.name }}'s full profile →
+      </a>
+    </div>
+  }
+</div>

@@ -523,8 +523,8 @@
   }
 }
 
-// ── Roster card: abandoned variant ──
-.roster-card--abandoned {
+// ── Roster card: isDrop variant ──
+.roster-card--isDrop {
   opacity: 0.65;
   border-style: dashed;
 
@@ -542,5 +542,84 @@
   text-transform: lowercase;
 
   &--outlier { color: var(--c-red-light); }
-  &--abandoned { color: var(--c-text-muted); }
+  &--isDrop { color: var(--c-text-muted); }
+}
+
+// ── Compare mode ──
+.compare-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  background: rgba(42, 95, 255, 0.08);
+  border: 1px solid var(--c-blue);
+  border-radius: var(--radius-md);
+  animation: fadeInUp 0.2s var(--ease-out);
+
+  &__icon { font-size: 1rem; color: var(--c-blue-light); }
+
+  &__text {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--c-text-secondary);
+    letter-spacing: 0.04em;
+    flex: 1;
+
+    strong { color: var(--c-blue-light); }
+  }
+
+  &__cancel {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-muted);
+    background: transparent;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-sm);
+    padding: 2px var(--space-3);
+    cursor: pointer;
+    transition: all var(--duration-fast);
+    &:hover { color: var(--c-red-light); border-color: var(--c-red); }
+  }
+}
+
+.roster-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  opacity: 0;
+  transition: opacity var(--duration-base);
+}
+
+.roster-card:hover .roster-card__actions {
+  opacity: 1;
+}
+
+.roster-card__compare-btn {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-text-muted);
+  background: transparent;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  padding: 2px var(--space-2);
+  cursor: pointer;
+  transition: all var(--duration-fast);
+
+  &:hover {
+    color: var(--c-blue-light);
+    border-color: var(--c-blue);
+    background: var(--c-blue-dim);
+  }
+
+  &--selected {
+    color: var(--c-blue-light);
+    border-color: var(--c-blue);
+    background: var(--c-blue-dim);
+    opacity: 1 !important;
+  }
 }
